@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="th" data-language="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Stone Craft Cafe & Bistro — premium dining, specialty coffee, and a refined black-and-gold atmosphere.">
+
+    <title>{% block title %}Stone Craft Cafe & Bistro{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Unified bilingual typography:
+         Thai headings: Bai Jamjuree | Thai body: Sarabun
+         English headings: Bai Jamjuree | English body: Manrope -->
+    <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+<div class="site-loader" id="siteLoader" aria-hidden="true">
+    <div class="loader-mark">SC</div>
+</div>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<header class="site-header" id="siteHeader">
+    <div class="nav-shell">
+        <a class="brand" href="/" aria-label="Stone Craft home">
+            <span class="brand-mark">SC</span>
+            <span class="brand-copy">
+                <strong>{{ restaurant_setting.restaurant_name or "Stone Craft Cafe & Bistro" }}</strong>
+                <small>Cafe & Bistro</small>
+            </span>
+        </a>
+
+        <button class="nav-toggle"
+                id="navToggle"
+                type="button"
+                aria-label="เปิดเมนู"
+                aria-expanded="false">
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="main-nav" id="mainNav" aria-label="เมนูหลัก">
+            <a href="/" data-th="หน้าแรก" data-en="Home">หน้าแรก</a>
+            <a href="/about" data-th="เรื่องราวของเรา" data-en="Our Story">เรื่องราวของเรา</a>
+            <a href="/menu" data-th="เมนู" data-en="Menu">เมนู</a>
+            <a href="/gallery" data-th="แกลเลอรี" data-en="Gallery">แกลเลอรี</a>
+            <a href="/review" data-th="รีวิว" data-en="Reviews">รีวิว</a>
+            <a href="/reservation" data-th="จองโต๊ะ" data-en="Reservations">จองโต๊ะ</a>
+        </nav>
+
+        <div class="nav-actions">
+            <button class="language-switch" id="languageSwitch" type="button" aria-label="เปลี่ยนภาษา">
+                <span class="language-active">TH</span>
+                <span class="language-divider">/</span>
+                <span>EN</span>
+            </button>
+
+            <a class="button button-small button-gold nav-reserve"
+               href="/reservation"
+               data-th="สำรองโต๊ะ"
+               data-en="Reserve">
+                สำรองโต๊ะ
+            </a>
+        </div>
+    </div>
+</header>
+
+<main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-stack">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+    <div class="footer-glow"></div>
+
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <span class="eyebrow">STONE CRAFT</span>
+            <h2 data-th="รสชาติที่ตั้งใจ บรรยากาศที่น่าจดจำ"
+                data-en="Considered flavours. Memorable moments.">
+                รสชาติที่ตั้งใจ บรรยากาศที่น่าจดจำ
+            </h2>
+            <p data-th="คาเฟ่และบิสโทรร่วมสมัยที่ผสานวัตถุดิบคุณภาพ งานคราฟต์ และการบริการอย่างอบอุ่น"
+               data-en="A contemporary cafe and bistro shaped by quality ingredients, craft, and warm hospitality.">
+                คาเฟ่และบิสโทรร่วมสมัยที่ผสานวัตถุดิบคุณภาพ งานคราฟต์ และการบริการอย่างอบอุ่น
+            </p>
+        </div>
+
+        <div class="footer-column">
+            <h3 data-th="เวลาทำการ" data-en="Opening Hours">เวลาทำการ</h3>
+            <p>Monday — Friday<br>10:00 — 22:00</p>
+            <p>Saturday — Sunday<br>09:00 — 23:00</p>
+        </div>
+
+        <div class="footer-column">
+            <h3 data-th="ติดต่อ" data-en="Contact">ติดต่อ</h3>
+            {% if restaurant_setting.phone %}<a href="tel:{{ restaurant_setting.phone|replace(' ', '') }}">{{ restaurant_setting.phone }}</a>{% endif %}
+            {% if restaurant_setting.email %}<a href="mailto:{{ restaurant_setting.email }}">{{ restaurant_setting.email }}</a>{% endif %}
+            <p>
+                <span class="lang-th">{{ restaurant_setting.address_th or 'กรุงเทพมหานคร ประเทศไทย' }}</span>
+                <span class="lang-en">{{ restaurant_setting.address_en or 'Bangkok, Thailand' }}</span>
+            </p>
+        </div>
+
+        <div class="footer-column">
+            <h3 data-th="ติดตามเรา" data-en="Follow">ติดตามเรา</h3>
+            <div class="social-links">
+                {% if restaurant_setting.facebook_url %}<a href="{{ restaurant_setting.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a>{% endif %}
+                {% if restaurant_setting.instagram_url %}<a href="{{ restaurant_setting.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a>{% endif %}
+                {% if restaurant_setting.tiktok_url %}<a href="{{ restaurant_setting.tiktok_url }}" target="_blank" rel="noopener" aria-label="TikTok">TikTok</a>{% endif %}
+                {% if restaurant_setting.line_url %}<a href="{{ restaurant_setting.line_url }}" target="_blank" rel="noopener" aria-label="LINE">LINE</a>{% endif %}
+                {% if restaurant_setting.grab_url %}<a href="{{ restaurant_setting.grab_url }}" target="_blank" rel="noopener" aria-label="GrabFood">GrabFood</a>{% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© <span id="currentYear"></span> {{ restaurant_setting.restaurant_name or "Stone Craft Cafe & Bistro" }}</p>
+        <a href="/admin/login" data-th="เข้าสู่ระบบผู้ดูแล" data-en="Admin login">
+            เข้าสู่ระบบผู้ดูแล
+        </a>
+    </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="กลับด้านบน">
+    ↑
+</button>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

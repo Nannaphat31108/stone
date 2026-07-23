@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block title %}Stone Craft Cafe & Bistro{% endblock %}
+
+{% block content %}
+<section class="hero luxury-hero">
+    <div class="hero-media"></div>
+    <div class="hero-vignette"></div>
+
+    <div class="hero-content reveal">
+        <span class="eyebrow" data-th="คาเฟ่ • บิสโทร • ไฟน์ไดนิ่ง"
+              data-en="CAFE • BISTRO • FINE DINING">
+            คาเฟ่ • บิสโทร • ไฟน์ไดนิ่ง
+        </span>
+
+        <h1>
+            <span data-th="มากกว่ามื้ออาหาร"
+                  data-en="More than dining.">
+                มากกว่ามื้ออาหาร
+            </span>
+            <em data-th="คือช่วงเวลาที่น่าจดจำ"
+                data-en="A moment to remember.">
+                คือช่วงเวลาที่น่าจดจำ
+            </em>
+        </h1>
+
+        <p data-th="สัมผัสอาหารร่วมสมัย กาแฟสเปเชียลตี้ และบรรยากาศหรูที่อบอุ่นในแบบ Stone Craft"
+           data-en="Contemporary cuisine, specialty coffee, and warm refined hospitality — the Stone Craft way.">
+            สัมผัสอาหารร่วมสมัย กาแฟสเปเชียลตี้ และบรรยากาศหรูที่อบอุ่นในแบบ Stone Craft
+        </p>
+
+        <div class="hero-actions">
+            <a href="/reservation" class="button button-gold"
+               data-th="สำรองโต๊ะ" data-en="Reserve a Table">
+                สำรองโต๊ะ
+            </a>
+            <a href="/menu" class="button button-ghost"
+               data-th="ดูเมนู" data-en="Explore the Menu">
+                ดูเมนู
+            </a>
+        </div>
+    </div>
+
+    <div class="hero-meta">
+        <span data-th="เลื่อนเพื่อสำรวจ" data-en="Scroll to discover">เลื่อนเพื่อสำรวจ</span>
+        <div class="hero-scroll-line"></div>
+    </div>
+</section>
+
+<section class="intro-section section-shell">
+    <div class="intro-number reveal">01</div>
+
+    <div class="intro-copy reveal">
+        <span class="eyebrow" data-th="แนวคิดของเรา" data-en="OUR PHILOSOPHY">
+            แนวคิดของเรา
+        </span>
+
+        <h2 data-th="เรียบง่ายอย่างมีรายละเอียด"
+            data-en="Simplicity, thoughtfully refined.">
+            เรียบง่ายอย่างมีรายละเอียด
+        </h2>
+    </div>
+
+    <div class="intro-text reveal">
+        <p data-th="เราเชื่อว่าอาหารที่ดีเริ่มจากวัตถุดิบที่ดี ผ่านความพิถีพิถัน และจบลงด้วยการบริการที่ทำให้ทุกคนรู้สึกเป็นคนพิเศษ"
+           data-en="We believe memorable dining begins with exceptional ingredients, precise craft, and hospitality that makes every guest feel considered.">
+            เราเชื่อว่าอาหารที่ดีเริ่มจากวัตถุดิบที่ดี ผ่านความพิถีพิถัน และจบลงด้วยการบริการที่ทำให้ทุกคนรู้สึกเป็นคนพิเศษ
+        </p>
+
+        <a class="text-link" href="/about"
+           data-th="อ่านเรื่องราวของเรา" data-en="Discover our story">
+            อ่านเรื่องราวของเรา
+        </a>
+    </div>
+</section>
+
+<section class="signature-section">
+    <div class="section-heading section-shell reveal">
+        <div>
+            <span class="eyebrow" data-th="เมนูซิกเนเจอร์" data-en="SIGNATURE SELECTION">
+                เมนูซิกเนเจอร์
+            </span>
+            <h2 data-th="รสชาติที่นิยาม Stone Craft"
+                data-en="Flavours that define Stone Craft.">
+                รสชาติที่นิยาม Stone Craft
+            </h2>
+        </div>
+
+        <a class="text-link" href="/menu"
+           data-th="ดูเมนูทั้งหมด" data-en="View full menu">
+            ดูเมนูทั้งหมด
+        </a>
+    </div>
+
+    <div class="signature-grid section-shell">
+        {% for item in featured_menu %}
+        <article class="signature-card {% if loop.first %}signature-card-large{% endif %} reveal">
+            {% if item.image %}
+            <img src="{{ image_url(item.image, 'menu') }}"
+                 alt="{{ item.name_th or item.name_en }}" loading="lazy">
+            {% else %}
+            <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=1400&q=85"
+                 alt="{{ item.name_th or item.name_en }}" loading="lazy">
+            {% endif %}
+            <div class="card-shade"></div>
+            <div class="signature-card-content">
+                <span>{{ '%02d'|format(loop.index) }} / {{ item.category or 'SIGNATURE' }}</span>
+                <h3>
+                    <span class="lang-th">{{ item.name_th }}</span>
+                    <span class="lang-en">{{ item.name_en }}</span>
+                </h3>
+                <p>
+                    <span class="lang-th">{{ item.description_th or '' }}</span>
+                    <span class="lang-en">{{ item.description_en or '' }}</span>
+                </p>
+                <strong>฿ {{ '%.0f'|format(item.price) }}</strong>
+            </div>
+        </article>
+        {% else %}
+        <div class="empty-state reveal">
+            <h3 data-th="ยังไม่มีเมนูแนะนำ" data-en="No featured menu yet.">ยังไม่มีเมนูแนะนำ</h3>
+            <p data-th="เพิ่มเมนูที่เปิดขายจากหน้าแอดมิน แล้วข้อมูลจะปรากฏตรงนี้" data-en="Add available menu items in admin and they will appear here.">เพิ่มเมนูที่เปิดขายจากหน้าแอดมิน แล้วข้อมูลจะปรากฏตรงนี้</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="experience-banner">
+    <div class="experience-image reveal"></div>
+    <div class="experience-content reveal">
+        <span class="eyebrow" data-th="พื้นที่สำหรับทุกโอกาส"
+              data-en="A PLACE FOR EVERY OCCASION">
+            พื้นที่สำหรับทุกโอกาส
+        </span>
+
+        <h2 data-th="ตั้งแต่มื้อสายสบาย ๆ จนถึงค่ำคืนพิเศษ"
+            data-en="From slow brunches to memorable evenings.">
+            ตั้งแต่มื้อสายสบาย ๆ จนถึงค่ำคืนพิเศษ
+        </h2>
+
+        <p data-th="ทุกมุมถูกออกแบบให้สวยงามแต่ไม่ห่างเหิน เหมาะทั้งสำหรับครอบครัว คู่รัก การพบปะ และงานเฉลิมฉลอง"
+           data-en="Every corner is refined yet welcoming — ideal for families, dates, gatherings, and celebrations.">
+            ทุกมุมถูกออกแบบให้สวยงามแต่ไม่ห่างเหิน เหมาะทั้งสำหรับครอบครัว คู่รัก การพบปะ และงานเฉลิมฉลอง
+        </p>
+
+        <a class="button button-outline" href="/gallery"
+           data-th="ชมบรรยากาศ" data-en="Explore the space">
+            ชมบรรยากาศ
+        </a>
+    </div>
+</section>
+
+<section class="stats-section section-shell">
+    <div class="stat reveal">
+        <strong class="counter" data-target="35">0</strong>
+        <span data-th="เมนูซิกเนเจอร์" data-en="Signature dishes">เมนูซิกเนเจอร์</span>
+    </div>
+    <div class="stat reveal">
+        <strong class="counter" data-target="12">0</strong>
+        <span data-th="พาร์ตเนอร์วัตถุดิบท้องถิ่น" data-en="Local producers">พาร์ตเนอร์วัตถุดิบท้องถิ่น</span>
+    </div>
+    <div class="stat reveal">
+        <strong class="counter" data-target="25000">0</strong>
+        <span data-th="มื้อแห่งความประทับใจ" data-en="Dining moments">มื้อแห่งความประทับใจ</span>
+    </div>
+    <div class="stat reveal">
+        <strong>4.9</strong>
+        <span data-th="คะแนนจากลูกค้า" data-en="Guest rating">คะแนนจากลูกค้า</span>
+    </div>
+</section>
+
+<section class="testimonial-section">
+    <div class="section-shell">
+        <div class="testimonial-quote reveal">“</div>
+
+        <blockquote class="reveal"
+                    data-th="อาหารมีรายละเอียด บรรยากาศสวย และทีมงานดูแลอย่างพอดี เป็นร้านที่อยากกลับมาอีกครั้ง"
+                    data-en="Beautifully considered food, a sophisticated atmosphere, and genuinely attentive service. A place worth returning to.">
+            อาหารมีรายละเอียด บรรยากาศสวย และทีมงานดูแลอย่างพอดี เป็นร้านที่อยากกลับมาอีกครั้ง
+        </blockquote>
+
+        <p class="testimonial-author reveal">— A Stone Craft Guest</p>
+    </div>
+</section>
+
+<section class="reservation-cta">
+    <div class="reservation-cta-image"></div>
+    <div class="reservation-cta-content reveal">
+        <span class="eyebrow" data-th="การต้อนรับเริ่มต้นที่นี่"
+              data-en="YOUR TABLE AWAITS">
+            การต้อนรับเริ่มต้นที่นี่
+        </span>
+
+        <h2 data-th="ให้เราดูแลมื้อพิเศษของคุณ"
+            data-en="Let us host your next occasion.">
+            ให้เราดูแลมื้อพิเศษของคุณ
+        </h2>
+
+        <a class="button button-gold" href="/reservation"
+           data-th="จองโต๊ะตอนนี้" data-en="Book your table">
+            จองโต๊ะตอนนี้
+        </a>
+    </div>
+</section>
+{% endblock %}

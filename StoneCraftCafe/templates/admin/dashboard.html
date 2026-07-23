@@ -1,0 +1,94 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block admin_content %}
+
+<div class="admin-header">
+    <div>
+        <h1>Dashboard</h1>
+        <p>ภาพรวมระบบร้านอาหาร</p>
+    </div>
+</div>
+
+<div class="stat-grid">
+
+    <div class="stat-card">
+        <span>เมนูทั้งหมด</span>
+        <strong>{{ statistics.menu_count }}</strong>
+    </div>
+
+    <div class="stat-card">
+        <span>การจองทั้งหมด</span>
+        <strong>{{ statistics.reservation_count }}</strong>
+    </div>
+
+    <div class="stat-card">
+        <span>การจองรอยืนยัน</span>
+        <strong>{{ statistics.pending_count }}</strong>
+    </div>
+
+    <div class="stat-card">
+        <span>รีวิวทั้งหมด</span>
+        <strong>{{ statistics.review_count }}</strong>
+    </div>
+
+    <div class="stat-card">
+        <span>รีวิวรอตรวจสอบ</span>
+        <strong>
+            {{ statistics.unapproved_review_count }}
+        </strong>
+    </div>
+
+    <div class="stat-card">
+        <span>รูปแกลเลอรี</span>
+        <strong>{{ statistics.gallery_count }}</strong>
+    </div>
+
+</div>
+
+<section class="admin-section">
+
+    <h2>การจองล่าสุด</h2>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>ชื่อลูกค้า</th>
+                    <th>วันที่</th>
+                    <th>เวลา</th>
+                    <th>จำนวนคน</th>
+                    <th>สถานะ</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for booking in latest_reservations %}
+                <tr>
+                    <td>{{ booking.fullname }}</td>
+                    <td>{{ booking.reserve_date }}</td>
+                    <td>{{ booking.reserve_time }}</td>
+                    <td>{{ booking.guests }}</td>
+                    <td>
+                        <span class="status">
+                            {{ booking.status }}
+                        </span>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5">
+                        ยังไม่มีข้อมูลการจอง
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}Admin{% endblock %}
+        | Stone Craft
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/admin.css') }}"
+    >
+</head>
+
+<body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="message-container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% if current_user.is_authenticated %}
+
+        <div class="admin-layout">
+
+            <aside class="sidebar">
+                <h2>Stone Craft</h2>
+
+                <p class="admin-name">
+                    {{ current_user.fullname or current_user.username }}
+                </p>
+
+                <nav>
+                    <a href="{{ url_for('admin_dashboard') }}">
+                        Dashboard
+                    </a>
+
+                    <a href="{{ url_for('admin_menu') }}">
+                        จัดการเมนู
+                    </a>
+
+                    <a href="{{ url_for('admin_gallery') }}">
+                        แกลเลอรี
+                    </a>
+
+                    <a href="{{ url_for('admin_reservations') }}">
+                        การจอง
+                    </a>
+
+                    <a href="{{ url_for('admin_reviews') }}">
+                        รีวิว
+                    </a>
+
+                    <a href="{{ url_for('admin_settings') }}">
+                        ข้อมูลร้าน
+                    </a>
+
+                    <a
+                        href="{{ url_for('home') }}"
+                        target="_blank"
+                    >
+                        เปิดหน้าเว็บไซต์
+                    </a>
+
+                    <a
+                        class="logout-link"
+                        href="{{ url_for('admin_logout') }}"
+                    >
+                        ออกจากระบบ
+                    </a>
+                </nav>
+            </aside>
+
+            <main class="admin-content">
+                {% block admin_content %}{% endblock %}
+            </main>
+
+        </div>
+
+    {% else %}
+
+        {% block login_content %}{% endblock %}
+
+    {% endif %}
+
+</body>
+</html>

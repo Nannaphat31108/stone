@@ -1,0 +1,106 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+แกลเลอรี
+{% endblock %}
+
+{% block admin_content %}
+
+<div class="admin-header">
+    <div>
+        <h1>จัดการแกลเลอรี</h1>
+        <p>เพิ่มและลบรูปภาพของร้าน</p>
+    </div>
+</div>
+
+<form
+    class="admin-form"
+    method="POST"
+    enctype="multipart/form-data"
+>
+
+    <label for="title_th">
+        ชื่อรูปภาษาไทย
+    </label>
+
+    <input
+        id="title_th"
+        name="title_th"
+        type="text"
+    >
+
+    <label for="title_en">
+        ชื่อรูปภาษาอังกฤษ
+    </label>
+
+    <input
+        id="title_en"
+        name="title_en"
+        type="text"
+    >
+
+    <label for="image">
+        เลือกรูปภาพ
+    </label>
+
+    <input
+        id="image"
+        name="image"
+        type="file"
+        accept=".png,.jpg,.jpeg,.webp"
+        required
+    >
+
+    <button
+        class="admin-button"
+        type="submit"
+    >
+        เพิ่มรูป
+    </button>
+
+</form>
+
+<div class="admin-gallery-grid">
+
+    {% for image in gallery_items %}
+    <article class="admin-gallery-card">
+
+        <img
+            src="{{ image_url(image.image, 'gallery') }}"
+            alt="{{ image.title_th or image.title_en or 'Gallery image' }}"
+        >
+
+        <h3>
+            {{ image.title_th or image.title_en or "ไม่มีชื่อ" }}
+        </h3>
+
+        {% if image.title_en %}
+        <p>
+            {{ image.title_en }}
+        </p>
+        {% endif %}
+
+        <form
+            method="POST"
+            action="{{ url_for(
+                'admin_gallery_delete',
+                gallery_id=image.id
+            ) }}"
+            onsubmit="return confirm('ยืนยันการลบรูปนี้?')"
+        >
+            <button
+                class="delete-button"
+                type="submit"
+            >
+                ลบ
+            </button>
+        </form>
+
+    </article>
+    {% else %}
+        <p>ยังไม่มีรูปในแกลเลอรี</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

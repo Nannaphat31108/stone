@@ -1,0 +1,33 @@
+STONE CRAFT LUXURY FRONTEND
+
+ไฟล์ในชุดนี้ใช้แทนหน้าเว็บฝั่งลูกค้าเท่านั้น ไม่กระทบ templates/admin หรือ static/css/admin.css
+
+วิธีติดตั้ง
+1. สำรองโฟลเดอร์ templates และ static เดิม
+2. คัดลอก templates/*.html ไปไว้ใน StoneCraftCafe/templates/
+3. คัดลอก static/css/style.css ไปไว้ใน StoneCraftCafe/static/css/
+4. คัดลอก static/js/main.js ไปไว้ใน StoneCraftCafe/static/js/
+5. ห้ามนำไฟล์เหล่านี้ไปทับ templates/admin/
+6. ปิด Flask ด้วย Ctrl+C แล้วรัน python app.py ใหม่
+7. กด Ctrl+F5 ในเบราว์เซอร์
+
+โครงสร้างรูปที่ระบบเรียกใช้
+static/images/hero.jpg
+static/images/about.jpg
+static/images/menu1.jpg
+static/images/menu2.jpg
+static/images/menu3.jpg
+static/images/gallery1.jpg
+static/images/gallery2.jpg
+static/images/gallery3.jpg
+static/images/gallery4.jpg
+
+รูปจากระบบแอดมิน
+static/uploads/menu/
+static/uploads/gallery/
+
+หมายเหตุเกี่ยวกับตัวแปร
+- menu.html ใช้ menu_items
+- gallery.html ใช้ gallery_items
+- review.html ใช้ reviews
+- reservation.html ส่งฟิลด์ fullname, phone, email, guests, date, time, note

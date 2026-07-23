@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Reservations | Stone Craft Cafe & Bistro{% endblock %}
+
+{% block content %}
+<section class="page-hero reservation-page-hero">
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content reveal">
+        <span class="eyebrow" data-th="สำรองโต๊ะ" data-en="RESERVATIONS">สำรองโต๊ะ</span>
+        <h1 data-th="ให้เราดูแล<br>ช่วงเวลาพิเศษของคุณ"
+            data-en="Let us host<br>your special occasion.">
+            ให้เราดูแล<br>ช่วงเวลาพิเศษของคุณ
+        </h1>
+    </div>
+</section>
+
+<section class="booking-section section-shell">
+    <div class="booking-details reveal">
+        <span class="eyebrow" data-th="วางแผนการมาเยือน" data-en="PLAN YOUR VISIT">
+            วางแผนการมาเยือน
+        </span>
+
+        <h2 data-th="โต๊ะของคุณกำลังรออยู่"
+            data-en="Your table awaits.">
+            โต๊ะของคุณกำลังรออยู่
+        </h2>
+
+        <p data-th="สำหรับการจองกลุ่มใหญ่ งานเลี้ยงส่วนตัว หรือคำขอพิเศษ กรุณาติดต่อทีมงานโดยตรง"
+           data-en="For large groups, private events, or special arrangements, please contact our team directly.">
+            สำหรับการจองกลุ่มใหญ่ งานเลี้ยงส่วนตัว หรือคำขอพิเศษ กรุณาติดต่อทีมงานโดยตรง
+        </p>
+
+        <div class="booking-information">
+            <div>
+                <span data-th="เวลาทำการ" data-en="Opening Hours">เวลาทำการ</span>
+                <strong>Daily 10:00 — 22:00</strong>
+            </div>
+            <div>
+                <span data-th="โทรศัพท์" data-en="Telephone">โทรศัพท์</span>
+                <strong>+66 00 000 0000</strong>
+            </div>
+            <div>
+                <span data-th="อีเมล" data-en="Email">อีเมล</span>
+                <strong>hello@stonecraftcafe.com</strong>
+            </div>
+        </div>
+    </div>
+
+    <form class="luxury-form reveal" method="POST">
+        <div class="form-heading">
+            <span>STONE CRAFT</span>
+            <h3 data-th="รายละเอียดการจอง" data-en="Reservation details">
+                รายละเอียดการจอง
+            </h3>
+        </div>
+
+        <div class="form-row">
+            <label>
+                <span data-th="ชื่อ–นามสกุล" data-en="Full name">ชื่อ–นามสกุล</span>
+                <input type="text" name="fullname" required autocomplete="name">
+            </label>
+
+            <label>
+                <span data-th="เบอร์โทรศัพท์" data-en="Phone number">เบอร์โทรศัพท์</span>
+                <input type="tel" name="phone" required autocomplete="tel">
+            </label>
+        </div>
+
+        <label>
+            <span data-th="อีเมล" data-en="Email address">อีเมล</span>
+            <input type="email" name="email" autocomplete="email">
+        </label>
+
+        <div class="form-row form-row-three">
+            <label>
+                <span data-th="จำนวนแขก" data-en="Guests">จำนวนแขก</span>
+                <input type="number" name="guests" min="1" max="20" required>
+            </label>
+
+            <label>
+                <span data-th="วันที่" data-en="Date">วันที่</span>
+                <input type="date" name="date" required>
+            </label>
+
+            <label>
+                <span data-th="เวลา" data-en="Time">เวลา</span>
+                <input type="time" name="time" required>
+            </label>
+        </div>
+
+        <label>
+            <span data-th="ข้อความเพิ่มเติม" data-en="Special request">ข้อความเพิ่มเติม</span>
+            <textarea name="note" rows="5"></textarea>
+        </label>
+
+        <button class="button button-gold button-full" type="submit"
+                data-th="ยืนยันการจอง" data-en="Request reservation">
+            ยืนยันการจอง
+        </button>
+
+        <small class="form-note"
+               data-th="ทีมงานจะติดต่อกลับเพื่อยืนยันการจองอีกครั้ง"
+               data-en="Our team will contact you to confirm your reservation.">
+            ทีมงานจะติดต่อกลับเพื่อยืนยันการจองอีกครั้ง
+        </small>
+    </form>
+</section>
+{% endblock %}

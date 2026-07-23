@@ -1,0 +1,152 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+ข้อมูลร้าน
+{% endblock %}
+
+{% block admin_content %}
+
+<div class="admin-header">
+    <div>
+        <h1>ข้อมูลร้าน</h1>
+        <p>แก้ไขข้อมูลติดต่อและ Social Media</p>
+    </div>
+</div>
+
+<form
+    class="admin-form"
+    method="POST"
+>
+
+    <label for="restaurant_name">
+        ชื่อร้าน
+    </label>
+
+    <input
+        id="restaurant_name"
+        name="restaurant_name"
+        type="text"
+        value="{{ setting.restaurant_name or '' }}"
+        required
+    >
+
+    <div class="form-grid">
+
+        <div>
+            <label for="phone">
+                เบอร์โทร
+            </label>
+
+            <input
+                id="phone"
+                name="phone"
+                type="text"
+                value="{{ setting.phone or '' }}"
+            >
+        </div>
+
+        <div>
+            <label for="email">
+                อีเมล
+            </label>
+
+            <input
+                id="email"
+                name="email"
+                type="email"
+                value="{{ setting.email or '' }}"
+            >
+        </div>
+
+    </div>
+
+    <label for="address_th">
+        ที่อยู่ภาษาไทย
+    </label>
+
+    <textarea
+        id="address_th"
+        name="address_th"
+        rows="4"
+    >{{ setting.address_th or '' }}</textarea>
+
+    <label for="address_en">
+        ที่อยู่ภาษาอังกฤษ
+    </label>
+
+    <textarea
+        id="address_en"
+        name="address_en"
+        rows="4"
+    >{{ setting.address_en or '' }}</textarea>
+
+    <label for="facebook_url">
+        Facebook URL
+    </label>
+
+    <input
+        id="facebook_url"
+        name="facebook_url"
+        type="url"
+        value="{{ setting.facebook_url or '' }}"
+        placeholder="https://..."
+    >
+
+    <label for="instagram_url">
+        Instagram URL
+    </label>
+
+    <input
+        id="instagram_url"
+        name="instagram_url"
+        type="url"
+        value="{{ setting.instagram_url or '' }}"
+        placeholder="https://..."
+    >
+
+    <label for="tiktok_url">
+        TikTok URL
+    </label>
+
+    <input
+        id="tiktok_url"
+        name="tiktok_url"
+        type="url"
+        value="{{ setting.tiktok_url or '' }}"
+        placeholder="https://..."
+    >
+
+    <label for="line_url">
+        LINE URL
+    </label>
+
+    <input
+        id="line_url"
+        name="line_url"
+        type="url"
+        value="{{ setting.line_url or '' }}"
+        placeholder="https://..."
+    >
+
+    <label for="grab_url">
+        GrabFood URL
+    </label>
+
+    <input
+        id="grab_url"
+        name="grab_url"
+        type="url"
+        value="{{ setting.grab_url or '' }}"
+        placeholder="https://..."
+    >
+
+    <button
+        class="admin-button"
+        type="submit"
+    >
+        บันทึกข้อมูลร้าน
+    </button>
+
+</form>
+
+{% endblock %}

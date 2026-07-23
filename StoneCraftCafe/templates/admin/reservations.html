@@ -1,0 +1,110 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+การจอง
+{% endblock %}
+
+{% block admin_content %}
+
+<div class="admin-header">
+    <div>
+        <h1>รายการจองโต๊ะ</h1>
+        <p>ตรวจสอบและเปลี่ยนสถานะการจอง</p>
+    </div>
+</div>
+
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>ลูกค้า</th>
+                <th>ข้อมูลติดต่อ</th>
+                <th>วันและเวลา</th>
+                <th>จำนวนคน</th>
+                <th>หมายเหตุ</th>
+                <th>สถานะ</th>
+                <th>จัดการ</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for booking in reservations %}
+            <tr>
+                <td>{{ booking.fullname }}</td>
+
+                <td>
+                    {{ booking.phone }}
+                    <br>
+                    <small>{{ booking.email or "-" }}</small>
+                </td>
+
+                <td>
+                    {{ booking.reserve_date }}
+                    <br>
+                    {{ booking.reserve_time }}
+                </td>
+
+                <td>{{ booking.guests }} คน</td>
+
+                <td>{{ booking.note or "-" }}</td>
+
+                <td>
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'admin_reservation_status',
+                            reservation_id=booking.id
+                        ) }}"
+                    >
+                        <select
+                            name="status"
+                            onchange="this.form.submit()"
+                        >
+                            {% for status in [
+                                'Pending',
+                                'Confirmed',
+                                'Cancelled'
+                            ] %}
+                            <option
+                                value="{{ status }}"
+                                {% if booking.status == status %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ status }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </td>
+
+                <td>
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'admin_reservation_delete',
+                            reservation_id=booking.id
+                        ) }}"
+                        onsubmit="return confirm('ยืนยันการลบข้อมูลการจองนี้?')"
+                    >
+                        <button
+                            class="delete-button"
+                            type="submit"
+                        >
+                            ลบ
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7">
+                    ยังไม่มีข้อมูลการจอง
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

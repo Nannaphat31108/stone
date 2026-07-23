@@ -1,0 +1,110 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+จัดการเมนู
+{% endblock %}
+
+{% block admin_content %}
+
+<div class="admin-header">
+    <div>
+        <h1>จัดการเมนู</h1>
+        <p>เพิ่ม แก้ไข หรือลบเมนูอาหาร</p>
+    </div>
+
+    <a
+        class="admin-button"
+        href="{{ url_for('admin_menu_add') }}"
+    >
+        + เพิ่มเมนู
+    </a>
+</div>
+
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>รูป</th>
+                <th>ชื่อเมนู</th>
+                <th>หมวดหมู่</th>
+                <th>ราคา</th>
+                <th>สถานะ</th>
+                <th>จัดการ</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in menu_items %}
+            <tr>
+                <td>
+                    {% if item.image %}
+                    <img
+                        class="table-image"
+                        src="{{ image_url(item.image, 'menu') }}"
+                        alt="{{ item.name_th }}"
+                    >
+                    {% else %}
+                    ไม่มีรูป
+                    {% endif %}
+                </td>
+
+                <td>
+                    {{ item.name_th }}
+                    <br>
+                    <small>{{ item.name_en }}</small>
+                </td>
+
+                <td>{{ item.category }}</td>
+
+                <td>
+                    ฿{{ "%.2f"|format(item.price) }}
+                </td>
+
+                <td>
+                    {% if item.available %}
+                        พร้อมขาย
+                    {% else %}
+                        ปิดขาย
+                    {% endif %}
+                </td>
+
+                <td class="action-cell">
+                    <a
+                        class="edit-button"
+                        href="{{ url_for(
+                            'admin_menu_edit',
+                            item_id=item.id
+                        ) }}"
+                    >
+                        แก้ไข
+                    </a>
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'admin_menu_delete',
+                            item_id=item.id
+                        ) }}"
+                        onsubmit="return confirm('ยืนยันการลบเมนูนี้?')"
+                    >
+                        <button
+                            class="delete-button"
+                            type="submit"
+                        >
+                            ลบ
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6">
+                    ยังไม่มีเมนู
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

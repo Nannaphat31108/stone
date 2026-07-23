@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Our Story | Stone Craft Cafe & Bistro{% endblock %}
+
+{% block content %}
+<section class="page-hero about-page-hero">
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content reveal">
+        <span class="eyebrow" data-th="เรื่องราวของเรา" data-en="OUR STORY">เรื่องราวของเรา</span>
+        <h1 data-th="สร้างจากความตั้งใจ<br>ในทุกรายละเอียด"
+            data-en="Crafted with purpose.<br>Defined by detail.">
+            สร้างจากความตั้งใจ<br>ในทุกรายละเอียด
+        </h1>
+    </div>
+</section>
+
+<section class="story-section section-shell">
+    <div class="story-intro reveal">
+        <span class="section-index">01</span>
+        <h2 data-th="Stone Craft ไม่ได้เริ่มจากการอยากเป็นร้านที่ใหญ่ที่สุด"
+            data-en="Stone Craft was never created to be the biggest.">
+            Stone Craft ไม่ได้เริ่มจากการอยากเป็นร้านที่ใหญ่ที่สุด
+        </h2>
+    </div>
+
+    <div class="story-body reveal">
+        <p class="lead"
+           data-th="เราเริ่มจากคำถามง่าย ๆ ว่า จะทำอย่างไรให้มื้ออาหารหนึ่งมื้อกลายเป็นความทรงจำที่ดี"
+           data-en="It began with a simple question: how can one meal become a lasting memory?">
+            เราเริ่มจากคำถามง่าย ๆ ว่า จะทำอย่างไรให้มื้ออาหารหนึ่งมื้อกลายเป็นความทรงจำที่ดี
+        </p>
+
+        <p data-th="คำตอบของเราอยู่ในวัตถุดิบที่คัดสรร การปรุงอย่างแม่นยำ พื้นที่ที่ให้ความรู้สึกผ่อนคลาย และการบริการที่จริงใจ ทุกสิ่งถูกประกอบเข้าด้วยกันอย่างพอดี เพื่อให้แขกทุกคนรู้สึกว่าเวลาที่นี่มีความหมาย"
+           data-en="Our answer lies in carefully sourced ingredients, precise cooking, a calming environment, and sincere service. Every element is composed with intention so that time spent here feels meaningful.">
+            คำตอบของเราอยู่ในวัตถุดิบที่คัดสรร การปรุงอย่างแม่นยำ พื้นที่ที่ให้ความรู้สึกผ่อนคลาย และการบริการที่จริงใจ ทุกสิ่งถูกประกอบเข้าด้วยกันอย่างพอดี เพื่อให้แขกทุกคนรู้สึกว่าเวลาที่นี่มีความหมาย
+        </p>
+    </div>
+</section>
+
+<section class="editorial-split">
+    <div class="editorial-image reveal">
+        <img src="{{ url_for('static', filename='images/about.jpg') }}"
+             alt="Stone Craft interior"
+             onerror="this.src='https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1400&q=85'">
+    </div>
+
+    <div class="editorial-copy reveal">
+        <span class="eyebrow" data-th="จากครัวถึงโต๊ะ" data-en="FROM KITCHEN TO TABLE">จากครัวถึงโต๊ะ</span>
+        <h2 data-th="คุณภาพที่มองเห็นและสัมผัสได้"
+            data-en="Quality you can see, taste, and feel.">
+            คุณภาพที่มองเห็นและสัมผัสได้
+        </h2>
+        <p data-th="เชฟของเราทำงานใกล้ชิดกับผู้ผลิตและซัพพลายเออร์ที่ไว้ใจได้ เลือกใช้วัตถุดิบตามฤดูกาล และปล่อยให้รสชาติธรรมชาติเป็นพระเอก"
+           data-en="Our chefs work closely with trusted producers, choose seasonal ingredients, and let natural flavours lead every plate.">
+            เชฟของเราทำงานใกล้ชิดกับผู้ผลิตและซัพพลายเออร์ที่ไว้ใจได้ เลือกใช้วัตถุดิบตามฤดูกาล และปล่อยให้รสชาติธรรมชาติเป็นพระเอก
+        </p>
+    </div>
+</section>
+
+<section class="values-section section-shell">
+    <div class="section-heading reveal">
+        <div>
+            <span class="eyebrow" data-th="สิ่งที่เราให้คุณค่า" data-en="WHAT MATTERS TO US">สิ่งที่เราให้คุณค่า</span>
+            <h2 data-th="หลักคิดเบื้องหลังทุกประสบการณ์"
+                data-en="The principles behind every experience.">
+                หลักคิดเบื้องหลังทุกประสบการณ์
+            </h2>
+        </div>
+    </div>
+
+    <div class="values-grid">
+        <article class="value-card reveal">
+            <span>01</span>
+            <h3 data-th="วัตถุดิบจริง" data-en="Honest Ingredients">วัตถุดิบจริง</h3>
+            <p data-th="เลือกจากคุณภาพ ฤดูกาล และแหล่งที่มา ไม่ใช่เพียงหน้าตา"
+               data-en="Chosen for quality, seasonality, and provenance — never appearance alone.">
+                เลือกจากคุณภาพ ฤดูกาล และแหล่งที่มา ไม่ใช่เพียงหน้าตา
+            </p>
+        </article>
+
+        <article class="value-card reveal">
+            <span>02</span>
+            <h3 data-th="งานคราฟต์" data-en="Considered Craft">งานคราฟต์</h3>
+            <p data-th="ใส่ใจตั้งแต่การเตรียม การปรุง ไปจนถึงรายละเอียดก่อนเสิร์ฟ"
+               data-en="Care in preparation, cooking, plating, and every final touch.">
+                ใส่ใจตั้งแต่การเตรียม การปรุง ไปจนถึงรายละเอียดก่อนเสิร์ฟ
+            </p>
+        </article>
+
+        <article class="value-card reveal">
+            <span>03</span>
+            <h3 data-th="การต้อนรับ" data-en="Warm Hospitality">การต้อนรับ</h3>
+            <p data-th="เป็นมืออาชีพโดยไม่ห่างเหิน และดูแลอย่างพอดี"
+               data-en="Professional without distance, attentive without intrusion.">
+                เป็นมืออาชีพโดยไม่ห่างเหิน และดูแลอย่างพอดี
+            </p>
+        </article>
+
+        <article class="value-card reveal">
+            <span>04</span>
+            <h3 data-th="ความยั่งยืน" data-en="Responsible Choices">ความยั่งยืน</h3>
+            <p data-th="ลดของเสีย เลือกใช้ทรัพยากรอย่างรับผิดชอบ และสนับสนุนชุมชน"
+               data-en="Less waste, responsible sourcing, and meaningful support for local communities.">
+                ลดของเสีย เลือกใช้ทรัพยากรอย่างรับผิดชอบ และสนับสนุนชุมชน
+            </p>
+        </article>
+    </div>
+</section>
+
+<section class="quote-banner">
+    <div class="section-shell reveal">
+        <p data-th="“อาหารที่ดีไม่จำเป็นต้องซับซ้อน แต่ต้องมีความชัดเจนและจริงใจ”"
+           data-en="“Great food need not be complicated. It must be clear, sincere, and beautifully made.”">
+            “อาหารที่ดีไม่จำเป็นต้องซับซ้อน แต่ต้องมีความชัดเจนและจริงใจ”
+        </p>
+        <span>— Stone Craft Kitchen</span>
+    </div>
+</section>
+{% endblock %}

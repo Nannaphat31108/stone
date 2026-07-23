@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Reviews | Stone Craft Cafe & Bistro{% endblock %}
+
+{% block content %}
+<section class="page-hero review-page-hero">
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content reveal">
+        <span class="eyebrow" data-th="เสียงจากลูกค้า" data-en="GUEST REVIEWS">เสียงจากลูกค้า</span>
+        <h1 data-th="ประสบการณ์จริง<br>จากผู้มาเยือน"
+            data-en="Real experiences.<br>Shared by our guests.">
+            ประสบการณ์จริง<br>จากผู้มาเยือน
+        </h1>
+    </div>
+</section>
+
+<section class="review-summary section-shell">
+    <div class="rating-block reveal">
+        <strong>4.9</strong>
+        <div>
+            <div class="stars">★★★★★</div>
+            <p data-th="คะแนนเฉลี่ยจากลูกค้าของเรา"
+               data-en="Average rating from our guests">
+                คะแนนเฉลี่ยจากลูกค้าของเรา
+            </p>
+        </div>
+    </div>
+
+    <div class="review-intro reveal">
+        <span class="eyebrow" data-th="ทุกความคิดเห็นมีความหมาย"
+              data-en="EVERY VOICE MATTERS">
+            ทุกความคิดเห็นมีความหมาย
+        </span>
+        <h2 data-th="สิ่งที่แขกของเราพูดถึง"
+            data-en="What our guests are saying.">
+            สิ่งที่แขกของเราพูดถึง
+        </h2>
+    </div>
+</section>
+
+<section class="review-list section-shell">
+    <div class="review-grid">
+        {% for review in reviews %}
+            {% if review.approved %}
+            <article class="review-card reveal">
+                <div class="review-card-top">
+                    <div class="review-avatar">
+                        {{ review.name[:1]|upper }}
+                    </div>
+                    <div>
+                        <h3>{{ review.name }}</h3>
+                        <div class="stars">
+                            {% for star in range(review.rating) %}★{% endfor %}
+                            {% for star in range(5 - review.rating) %}<span>★</span>{% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <blockquote>“{{ review.comment }}”</blockquote>
+
+                <small>
+                    {% if review.created_at %}
+                        {{ review.created_at.strftime('%d %B %Y') }}
+                    {% endif %}
+                </small>
+            </article>
+            {% endif %}
+        {% else %}
+        <article class="review-card reveal">
+            <div class="review-card-top">
+                <div class="review-avatar">A</div>
+                <div>
+                    <h3>Anonymous Guest</h3>
+                    <div class="stars">★★★★★</div>
+                </div>
+            </div>
+            <blockquote data-th="“อาหารอร่อยมาก บรรยากาศสวย และบริการอบอุ่นเกินความคาดหมาย”"
+                        data-en="“Beautiful food, a refined atmosphere, and service that exceeded expectations.”">
+                “อาหารอร่อยมาก บรรยากาศสวย และบริการอบอุ่นเกินความคาดหมาย”
+            </blockquote>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="review-form-section">
+    <div class="section-shell review-form-layout">
+        <div class="review-form-copy reveal">
+            <span class="eyebrow" data-th="แบ่งปันประสบการณ์" data-en="SHARE YOUR EXPERIENCE">
+                แบ่งปันประสบการณ์
+            </span>
+            <h2 data-th="ความคิดเห็นของคุณช่วยให้เราดียิ่งขึ้น"
+                data-en="Your feedback helps us become better.">
+                ความคิดเห็นของคุณช่วยให้เราดียิ่งขึ้น
+            </h2>
+            <p data-th="ทุกรีวิวจะได้รับการตรวจสอบก่อนแสดงบนเว็บไซต์"
+               data-en="All reviews are moderated before appearing on the website.">
+                ทุกรีวิวจะได้รับการตรวจสอบก่อนแสดงบนเว็บไซต์
+            </p>
+        </div>
+
+        <form class="luxury-form reveal" method="POST">
+            <label>
+                <span data-th="ชื่อ" data-en="Name">ชื่อ</span>
+                <input type="text" name="name" required>
+            </label>
+
+            <label>
+                <span data-th="คะแนน" data-en="Rating">คะแนน</span>
+                <select name="rating" required>
+                    <option value="">—</option>
+                    <option value="5">5 — Excellent</option>
+                    <option value="4">4 — Very good</option>
+                    <option value="3">3 — Good</option>
+                    <option value="2">2 — Fair</option>
+                    <option value="1">1 — Poor</option>
+                </select>
+            </label>
+
+            <label>
+                <span data-th="ความคิดเห็น" data-en="Your review">ความคิดเห็น</span>
+                <textarea name="comment" rows="6" required></textarea>
+            </label>
+
+            <button class="button button-gold button-full" type="submit"
+                    data-th="ส่งรีวิว" data-en="Submit review">
+                ส่งรีวิว
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}

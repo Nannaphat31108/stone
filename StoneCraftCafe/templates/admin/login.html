@@ -1,0 +1,71 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+เข้าสู่ระบบผู้ดูแล
+{% endblock %}
+
+{% block login_content %}
+
+<div class="login-page">
+
+    <form
+        class="login-card"
+        method="POST"
+        action="{{ url_for('admin_login') }}"
+    >
+
+        <div class="login-brand">
+            <h1>Stone Craft</h1>
+            <p>Cafe & Bistro Admin</p>
+        </div>
+
+        <div class="form-group">
+            <label for="username">
+                ชื่อผู้ใช้
+            </label>
+
+            <input
+                id="username"
+                name="username"
+                type="text"
+                placeholder="กรอกชื่อผู้ใช้"
+                required
+                autofocus
+                autocomplete="username"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="password">
+                รหัสผ่าน
+            </label>
+
+            <input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="กรอกรหัสผ่าน"
+                required
+                autocomplete="current-password"
+            >
+        </div>
+
+        <button
+            class="login-button"
+            type="submit"
+        >
+            เข้าสู่ระบบ
+        </button>
+
+        <a
+            class="back-home"
+            href="{{ url_for('home') }}"
+        >
+            ← กลับหน้าเว็บไซต์
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}

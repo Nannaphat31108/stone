@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Menu | Stone Craft Cafe & Bistro{% endblock %}
+
+{% block content %}
+<section class="page-hero menu-page-hero">
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content reveal">
+        <span class="eyebrow" data-th="เมนูของเรา" data-en="OUR MENU">เมนูของเรา</span>
+        <h1 data-th="วัตถุดิบตามฤดูกาล<br>ปรุงด้วยความตั้งใจ"
+            data-en="Season-led ingredients.<br>Crafted with intention.">
+            วัตถุดิบตามฤดูกาล<br>ปรุงด้วยความตั้งใจ
+        </h1>
+    </div>
+</section>
+
+<section class="menu-section section-shell">
+    <div class="menu-toolbar reveal">
+        <div>
+            <span class="eyebrow" data-th="รายการอาหารและเครื่องดื่ม"
+                  data-en="FOOD & DRINK">
+                รายการอาหารและเครื่องดื่ม
+            </span>
+            <h2 data-th="เลือกช่วงเวลาที่ใช่สำหรับคุณ"
+                data-en="Choose what suits the moment.">
+                เลือกช่วงเวลาที่ใช่สำหรับคุณ
+            </h2>
+        </div>
+
+        <div class="menu-filters" role="group" aria-label="Menu filters">
+            <button class="menu-filter active" type="button" data-filter="all"
+                    data-th="ทั้งหมด" data-en="All">ทั้งหมด</button>
+            <button class="menu-filter" type="button" data-filter="อาหารจานหลัก"
+                    data-th="อาหาร" data-en="Dining">อาหาร</button>
+            <button class="menu-filter" type="button" data-filter="กาแฟ"
+                    data-th="กาแฟ" data-en="Coffee">กาแฟ</button>
+            <button class="menu-filter" type="button" data-filter="เครื่องดื่ม"
+                    data-th="เครื่องดื่ม" data-en="Drinks">เครื่องดื่ม</button>
+            <button class="menu-filter" type="button" data-filter="ของหวาน"
+                    data-th="ของหวาน" data-en="Dessert">ของหวาน</button>
+        </div>
+    </div>
+
+    <div class="menu-grid" id="menuGrid">
+        {% for item in menu_items %}
+        <article class="menu-card reveal"
+                 data-category="{{ item.category or '' }}">
+
+            <div class="menu-card-image">
+                {% if item.image %}
+                <img src="{{ image_url(item.image, 'menu') }}"
+                     alt="{{ item.name_th or item.name_en }}"
+                     loading="lazy">
+                {% else %}
+                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1000&q=85"
+                     alt="{{ item.name_th or item.name_en }}"
+                     loading="lazy">
+                {% endif %}
+
+                {% if item.available %}
+                <span class="menu-availability"
+                      data-th="พร้อมเสิร์ฟ"
+                      data-en="Available">
+                    พร้อมเสิร์ฟ
+                </span>
+                {% else %}
+                <span class="menu-availability unavailable"
+                      data-th="หมดชั่วคราว"
+                      data-en="Unavailable">
+                    หมดชั่วคราว
+                </span>
+                {% endif %}
+            </div>
+
+            <div class="menu-card-body">
+                <div class="menu-card-topline">
+                    <span>{{ item.category }}</span>
+                    <strong>฿ {{ "%.0f"|format(item.price) }}</strong>
+                </div>
+
+                <h3>
+                    <span class="lang-th">{{ item.name_th }}</span>
+                    <span class="lang-en">{{ item.name_en }}</span>
+                </h3>
+
+                <p>
+                    <span class="lang-th">{{ item.description_th or '' }}</span>
+                    <span class="lang-en">{{ item.description_en or '' }}</span>
+                </p>
+            </div>
+        </article>
+        {% else %}
+        <div class="empty-state reveal">
+            <span>SC</span>
+            <h3 data-th="กำลังเตรียมเมนูใหม่" data-en="Our new menu is coming soon.">
+                กำลังเตรียมเมนูใหม่
+            </h3>
+            <p data-th="โปรดกลับมาเยี่ยมชมอีกครั้งในเร็ว ๆ นี้"
+               data-en="Please check back again shortly.">
+                โปรดกลับมาเยี่ยมชมอีกครั้งในเร็ว ๆ นี้
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="menu-note">
+    <div class="section-shell reveal">
+        <span class="eyebrow" data-th="ข้อควรทราบ" data-en="PLEASE NOTE">ข้อควรทราบ</span>
+        <p data-th="เมนูและวัตถุดิบบางรายการอาจเปลี่ยนตามฤดูกาล กรุณาแจ้งทีมงานหากมีอาการแพ้อาหารหรือข้อจำกัดด้านอาหาร"
+           data-en="Menus and ingredients may change seasonally. Please inform our team of any allergies or dietary requirements.">
+            เมนูและวัตถุดิบบางรายการอาจเปลี่ยนตามฤดูกาล กรุณาแจ้งทีมงานหากมีอาการแพ้อาหารหรือข้อจำกัดด้านอาหาร
+        </p>
+    </div>
+</section>
+{% endblock %}
