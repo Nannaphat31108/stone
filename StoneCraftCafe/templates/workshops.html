@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Workshops & Events | Stone Craft{% endblock %}
+
+{% block content %}
+<section class="page-hero workshop-hero">
+    <div class="page-hero-content">
+        <span class="eyebrow">STONE CRAFT EXPERIENCES</span>
+        <h1 data-th="เวิร์กช็อปและกิจกรรมพิเศษ" data-en="Workshops & Special Events">เวิร์กช็อปและกิจกรรมพิเศษ</h1>
+        <p data-th="พื้นที่สำหรับการเรียนรู้ งานคราฟต์ อาหาร เครื่องดื่ม และช่วงเวลาพิเศษร่วมกัน"
+           data-en="A curated space for craft, food, drinks, learning, and memorable shared experiences.">
+            พื้นที่สำหรับการเรียนรู้ งานคราฟต์ อาหาร เครื่องดื่ม และช่วงเวลาพิเศษร่วมกัน
+        </p>
+    </div>
+</section>
+
+<section class="section section-dark">
+    <div class="section-heading">
+        <span class="eyebrow" data-th="กิจกรรมล่าสุด" data-en="Upcoming experiences">กิจกรรมล่าสุด</span>
+        <h2 data-th="เลือกประสบการณ์ที่คุณสนใจ" data-en="Choose your next experience">เลือกประสบการณ์ที่คุณสนใจ</h2>
+    </div>
+
+    <div class="workshop-grid">
+        {% for workshop in workshop_items %}
+        <article class="workshop-card{% if workshop.featured %} workshop-card-featured{% endif %}">
+            <a class="workshop-image" href="{{ url_for('workshop_detail', workshop_id=workshop.id) }}">
+                {% if workshop.image %}
+                <img src="{{ image_url(workshop.image, 'workshop') }}" alt="{{ workshop.title_th }}" loading="lazy">
+                {% else %}
+                <div class="workshop-image-placeholder">SC</div>
+                {% endif %}
+                {% if workshop.featured %}<span class="workshop-badge" data-th="แนะนำ" data-en="Featured">แนะนำ</span>{% endif %}
+            </a>
+            <div class="workshop-card-body">
+                <div class="workshop-meta">
+                    {% if workshop.event_date %}<span>{{ workshop.event_date.strftime('%d.%m.%Y') }}</span>{% endif %}
+                    {% if workshop.start_time %}<span>{{ workshop.start_time }}{% if workshop.end_time %}–{{ workshop.end_time }}{% endif %}</span>{% endif %}
+                </div>
+                <h3><span class="lang-th">{{ workshop.title_th }}</span><span class="lang-en">{{ workshop.title_en }}</span></h3>
+                <p><span class="lang-th">{{ workshop.short_description_th or '' }}</span><span class="lang-en">{{ workshop.short_description_en or '' }}</span></p>
+                <div class="workshop-card-footer">
+                    <span class="workshop-price">
+                        {% if workshop.price and workshop.price > 0 %}฿{{ "{:,.0f}".format(workshop.price) }}{% else %}<span data-th="เข้าร่วมฟรี" data-en="Free entry">เข้าร่วมฟรี</span>{% endif %}
+                    </span>
+                    <a href="{{ url_for('workshop_detail', workshop_id=workshop.id) }}" class="text-link" data-th="ดูรายละเอียด" data-en="View details">ดูรายละเอียด →</a>
+                </div>
+            </div>
+        </article>
+        {% else %}
+        <div class="empty-state">
+            <h3 data-th="กำลังเตรียมกิจกรรมใหม่" data-en="New experiences are coming soon">กำลังเตรียมกิจกรรมใหม่</h3>
+            <p data-th="ติดตามรายละเอียดกิจกรรมพิเศษเร็ว ๆ นี้" data-en="Please check back soon for upcoming workshops and special events.">ติดตามรายละเอียดกิจกรรมพิเศษเร็ว ๆ นี้</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

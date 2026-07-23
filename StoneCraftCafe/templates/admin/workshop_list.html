@@ -1,0 +1,28 @@
+{% extends "admin/base.html" %}
+{% block title %}Workshops{% endblock %}
+{% block admin_content %}
+<div class="admin-header">
+    <div><h1>Workshop และกิจกรรมพิเศษ</h1><p>เพิ่ม แก้ไข และเผยแพร่กิจกรรมบนหน้าเว็บไซต์</p></div>
+    <a class="admin-button" href="{{ url_for('admin_workshop_add') }}">+ เพิ่มกิจกรรม</a>
+</div>
+<div class="admin-section table-wrapper">
+<table>
+<thead><tr><th>รูป</th><th>กิจกรรม</th><th>วันที่</th><th>ราคา</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+<tbody>
+{% for item in workshop_items %}
+<tr>
+<td>{% if item.image %}<img class="table-image" src="{{ image_url(item.image, 'workshop') }}" alt="">{% else %}—{% endif %}</td>
+<td><strong>{{ item.title_th }}</strong><br><small>{{ item.title_en }}</small></td>
+<td>{{ item.event_date.strftime('%d/%m/%Y') if item.event_date else 'ไม่ระบุ' }}</td>
+<td>{% if item.price %}฿{{ "{:,.0f}".format(item.price) }}{% else %}ฟรี{% endif %}</td>
+<td>{% if item.published %}<span class="status-pill status-live">เผยแพร่</span>{% else %}<span class="status-pill">ฉบับร่าง</span>{% endif %}{% if item.featured %}<br><small>Featured</small>{% endif %}</td>
+<td class="action-cell">
+<a class="edit-button" href="{{ url_for('admin_workshop_edit', workshop_id=item.id) }}">แก้ไข</a>
+<form method="POST" action="{{ url_for('admin_workshop_delete', workshop_id=item.id) }}" onsubmit="return confirm('ยืนยันการลบกิจกรรมนี้?')"><button class="delete-button" type="submit">ลบ</button></form>
+</td>
+</tr>
+{% else %}<tr><td colspan="6">ยังไม่มีกิจกรรม</td></tr>{% endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}

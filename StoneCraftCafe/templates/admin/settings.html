@@ -140,6 +140,22 @@
         placeholder="https://..."
     >
 
+
+    <div class="admin-subsection">
+        <h2>Google Maps</h2>
+        <p class="field-help">นำค่า Embed URL จาก Google Maps → แชร์ → ฝังแผนที่ → คัดลอก HTML ระบบรองรับทั้ง URL และโค้ด iframe</p>
+
+        <label for="map_embed_url">Google Maps Embed URL</label>
+        <textarea id="map_embed_url" name="map_embed_url" rows="4" placeholder="https://www.google.com/maps/embed?pb=...">{{ setting.map_embed_url or '' }}</textarea>
+
+        <label for="map_url">ลิงก์เปิดแผนที่ / นำทาง</label>
+        <input id="map_url" name="map_url" type="url" value="{{ setting.map_url or '' }}" placeholder="https://maps.app.goo.gl/...">
+
+        {% if setting.map_embed_url %}
+        <div class="map-preview-admin"><iframe src="{{ setting.map_embed_url }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="ตัวอย่างแผนที่"></iframe></div>
+        {% endif %}
+    </div>
+
     <button
         class="admin-button"
         type="submit"

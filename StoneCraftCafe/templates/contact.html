@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Contact & Location | Stone Craft{% endblock %}
+{% block content %}
+<section class="page-hero contact-hero">
+    <div class="page-hero-content">
+        <span class="eyebrow">VISIT STONE CRAFT</span>
+        <h1 data-th="ติดต่อและแผนที่" data-en="Contact & Location">ติดต่อและแผนที่</h1>
+        <p data-th="วางแผนการเดินทาง สำรองโต๊ะ หรือสอบถามกิจกรรมพิเศษกับเรา"
+           data-en="Plan your visit, reserve a table, or ask about our special experiences.">วางแผนการเดินทาง สำรองโต๊ะ หรือสอบถามกิจกรรมพิเศษกับเรา</p>
+    </div>
+</section>
+
+<section class="section location-dashboard">
+    <div class="location-map-panel">
+        {% if restaurant_setting.map_embed_url %}
+        <iframe src="{{ restaurant_setting.map_embed_url }}" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" title="Stone Craft Cafe location"></iframe>
+        {% else %}
+        <div class="map-empty"><span>SC</span><p data-th="เพิ่ม Embed URL ได้จากหน้าแอดมิน → ข้อมูลร้าน" data-en="Add a Google Maps Embed URL in Admin → Restaurant settings">เพิ่ม Embed URL ได้จากหน้าแอดมิน → ข้อมูลร้าน</p></div>
+        {% endif %}
+    </div>
+
+    <div class="location-info-panel">
+        <span class="eyebrow" data-th="ข้อมูลร้าน" data-en="Restaurant details">ข้อมูลร้าน</span>
+        <h2>{{ restaurant_setting.restaurant_name or 'Stone Craft Cafe & Bistro' }}</h2>
+        <div class="contact-info-list">
+            {% if restaurant_setting.address_th or restaurant_setting.address_en %}<div><small data-th="ที่อยู่" data-en="Address">ที่อยู่</small><p><span class="lang-th">{{ restaurant_setting.address_th or '' }}</span><span class="lang-en">{{ restaurant_setting.address_en or '' }}</span></p></div>{% endif %}
+            {% if restaurant_setting.phone %}<div><small data-th="โทรศัพท์" data-en="Phone">โทรศัพท์</small><a href="tel:{{ restaurant_setting.phone|replace(' ', '') }}">{{ restaurant_setting.phone }}</a></div>{% endif %}
+            {% if restaurant_setting.email %}<div><small data-th="อีเมล" data-en="Email">อีเมล</small><a href="mailto:{{ restaurant_setting.email }}">{{ restaurant_setting.email }}</a></div>{% endif %}
+            <div><small data-th="เวลาทำการ" data-en="Opening hours">เวลาทำการ</small><p>Monday–Friday 10:00–22:00<br>Saturday–Sunday 09:00–23:00</p></div>
+        </div>
+        <div class="location-actions">
+            {% if restaurant_setting.map_url %}<a class="button button-gold" href="{{ restaurant_setting.map_url }}" target="_blank" rel="noopener" data-th="เปิดเส้นทางใน Google Maps" data-en="Open directions in Google Maps">เปิดเส้นทางใน Google Maps</a>{% endif %}
+            <a class="button button-outline" href="{{ url_for('reservation') }}" data-th="สำรองโต๊ะ" data-en="Reserve a table">สำรองโต๊ะ</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

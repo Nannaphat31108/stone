@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 from functools import wraps
 from pathlib import Path
+from urllib.parse import urlparse
 
 from flask import (
     Flask,
@@ -29,6 +30,7 @@ from models.reservation import Reservation
 from models.review import Review
 from models.setting import RestaurantSetting
 from models.user import User
+from models.workshop import Workshop
 from storage import delete_image, save_image
 
 
@@ -43,10 +45,35 @@ login_manager.login_view = "admin_login"
 login_manager.login_message = "กรุณาเข้าสู่ระบบก่อน"
 login_manager.login_message_category = "warning"
 
+
+@login_manager.user_loader
+def load_user(user_id):
+    try:
+        return db.session.get(User, int(user_id))
+    except (TypeError, ValueError):
+        return None
+
 BASE_DIR = Path(__file__).resolve().parent
 
 MENU_UPLOAD_FOLDER = BASE_DIR / "uploads" / "menu"
 GALLERY_UPLOAD_FOLDER = BASE_DIR / "uploads" / "gallery"
+WORKSHOP_UPLOAD_FOLDER = BASE_DIR / "uploads" / "workshop"
+
+
+def clean_map_embed_url(value):
+    """Accept a Google Maps embed URL or pasted iframe code and return a safe URL."""
+    value = (value or "").strip()
+    if not value:
+        return ""
+    if "<iframe" in value.lower():
+        import re
+        match = re.search(r'src=["\']([^"\']+)["\']', value, re.IGNORECASE)
+        value = match.group(1).strip() if match else ""
+    parsed = urlparse(value)
+    allowed_hosts = {"www.google.com", "google.com", "maps.google.com"}
+    if parsed.scheme != "https" or parsed.hostname not in allowed_hosts or "/maps/embed" not in parsed.path:
+        return None
+    return value
 
 
 
@@ -56,7 +83,10 @@ def image_url(value, image_type="menu"):
         return None
     if value.startswith(("https://", "http://")):
         return value
-    endpoint = "uploaded_gallery_image" if image_type == "gallery" else "uploaded_menu_image"
+    endpoint = {
+        "gallery": "uploaded_gallery_image",
+        "workshop": "uploaded_workshop_image",
+    }.get(image_type, "uploaded_menu_image")
     return url_for(endpoint, filename=value)
 
 
@@ -152,6 +182,25 @@ def gallery():
         "gallery.html",
         gallery_items=gallery_items
     )
+
+
+@app.route("/workshops")
+def workshops():
+    workshop_items = (
+        Workshop.query
+        .filter_by(published=True)
+        .order_by(Workshop.featured.desc(), Workshop.event_date.asc(), Workshop.id.desc())
+        .all()
+    )
+    return render_template("workshops.html", workshop_items=workshop_items)
+
+
+@app.route("/workshops/<int:workshop_id>")
+def workshop_detail(workshop_id):
+    workshop = db.get_or_404(Workshop, workshop_id)
+    if not workshop.published and not current_user.is_authenticated:
+        abort(404)
+    return render_template("workshop_detail.html", workshop=workshop)
 
 
 @app.route("/contact")
@@ -341,6 +390,11 @@ def uploaded_gallery_image(filename):
     )
 
 
+@app.route("/uploads/workshop/<filename>")
+def uploaded_workshop_image(filename):
+    return send_from_directory(WORKSHOP_UPLOAD_FOLDER, filename)
+
+
 # =====================================
 # Admin authentication
 # =====================================
@@ -412,7 +466,7 @@ def admin_logout():
 # =====================================
 
 @app.route("/admin")
-@admin_required
+@login_required
 def admin_dashboard():
     statistics = {
         "menu_count": MenuItem.query.count(),
@@ -452,7 +506,7 @@ def admin_dashboard():
 # =====================================
 
 @app.route("/admin/menu")
-@admin_required
+@login_required
 def admin_menu():
     menu_items = (
         MenuItem.query
@@ -470,7 +524,7 @@ def admin_menu():
     "/admin/menu/add",
     methods=["GET", "POST"]
 )
-@admin_required
+@login_required
 def admin_menu_add():
     if request.method == "POST":
         try:
@@ -553,7 +607,7 @@ def admin_menu_add():
     "/admin/menu/<int:item_id>/edit",
     methods=["GET", "POST"]
 )
-@admin_required
+@login_required
 def admin_menu_edit(item_id):
     item = db.get_or_404(
         MenuItem,
@@ -636,7 +690,7 @@ def admin_menu_edit(item_id):
 
 
 @app.post("/admin/menu/<int:item_id>/delete")
-@admin_required
+@login_required
 def admin_menu_delete(item_id):
     item = db.get_or_404(
         MenuItem,
@@ -666,7 +720,7 @@ def admin_menu_delete(item_id):
 # =====================================
 
 @app.route("/admin/reservations")
-@admin_required
+@login_required
 def admin_reservations():
     reservations = (
         Reservation.query
@@ -683,7 +737,7 @@ def admin_reservations():
 @app.post(
     "/admin/reservations/<int:reservation_id>/status"
 )
-@admin_required
+@login_required
 def admin_reservation_status(reservation_id):
     booking = db.get_or_404(
         Reservation,
@@ -720,7 +774,7 @@ def admin_reservation_status(reservation_id):
 @app.post(
     "/admin/reservations/<int:reservation_id>/delete"
 )
-@admin_required
+@login_required
 def admin_reservation_delete(reservation_id):
     booking = db.get_or_404(
         Reservation,
@@ -745,7 +799,7 @@ def admin_reservation_delete(reservation_id):
 # =====================================
 
 @app.route("/admin/reviews")
-@admin_required
+@login_required
 def admin_reviews():
     reviews = (
         Review.query
@@ -760,7 +814,7 @@ def admin_reviews():
 
 
 @app.post("/admin/reviews/<int:review_id>/approve")
-@admin_required
+@login_required
 def admin_review_approve(review_id):
     review_item = db.get_or_404(
         Review,
@@ -781,7 +835,7 @@ def admin_review_approve(review_id):
 
 
 @app.post("/admin/reviews/<int:review_id>/delete")
-@admin_required
+@login_required
 def admin_review_delete(review_id):
     review_item = db.get_or_404(
         Review,
@@ -809,7 +863,7 @@ def admin_review_delete(review_id):
     "/admin/gallery",
     methods=["GET", "POST"]
 )
-@admin_required
+@login_required
 def admin_gallery():
     if request.method == "POST":
         try:
@@ -865,7 +919,7 @@ def admin_gallery():
 
 
 @app.post("/admin/gallery/<int:gallery_id>/delete")
-@admin_required
+@login_required
 def admin_gallery_delete(gallery_id):
     gallery_item = db.get_or_404(
         Gallery,
@@ -891,6 +945,106 @@ def admin_gallery_delete(gallery_id):
 
 
 # =====================================
+# Workshop management
+# =====================================
+
+@app.route("/admin/workshops")
+@login_required
+def admin_workshops():
+    workshop_items = Workshop.query.order_by(Workshop.id.desc()).all()
+    return render_template("admin/workshop_list.html", workshop_items=workshop_items)
+
+
+@app.route("/admin/workshops/add", methods=["GET", "POST"])
+@login_required
+def admin_workshop_add():
+    if request.method == "POST":
+        try:
+            image_name = save_image(request.files.get("image"), WORKSHOP_UPLOAD_FOLDER, "workshop")
+            event_date_value = request.form.get("event_date", "").strip()
+            item = Workshop(
+                title_th=request.form.get("title_th", "").strip(),
+                title_en=request.form.get("title_en", "").strip(),
+                short_description_th=request.form.get("short_description_th", "").strip(),
+                short_description_en=request.form.get("short_description_en", "").strip(),
+                details_th=request.form.get("details_th", "").strip(),
+                details_en=request.form.get("details_en", "").strip(),
+                event_date=datetime.strptime(event_date_value, "%Y-%m-%d").date() if event_date_value else None,
+                start_time=request.form.get("start_time", "").strip(),
+                end_time=request.form.get("end_time", "").strip(),
+                location_th=request.form.get("location_th", "").strip(),
+                location_en=request.form.get("location_en", "").strip(),
+                price=float(request.form.get("price") or 0),
+                capacity=int(request.form.get("capacity") or 0),
+                booking_url=request.form.get("booking_url", "").strip(),
+                image=image_name,
+                published=request.form.get("published") == "on",
+                featured=request.form.get("featured") == "on",
+            )
+            if not item.title_th or not item.title_en:
+                raise ValueError("กรุณากรอกชื่อกิจกรรมทั้งภาษาไทยและอังกฤษ")
+            db.session.add(item)
+            db.session.commit()
+            flash("เพิ่ม Workshop เรียบร้อยแล้ว", "success")
+            return redirect(url_for("admin_workshops"))
+        except Exception as error:
+            db.session.rollback()
+            app.logger.exception("Add workshop error")
+            flash(f"เพิ่ม Workshop ไม่สำเร็จ: {error}", "error")
+    return render_template("admin/workshop_form.html", item=None)
+
+
+@app.route("/admin/workshops/<int:workshop_id>/edit", methods=["GET", "POST"])
+@login_required
+def admin_workshop_edit(workshop_id):
+    item = db.get_or_404(Workshop, workshop_id)
+    if request.method == "POST":
+        try:
+            new_image = request.files.get("image")
+            if new_image and new_image.filename:
+                delete_image(item.image, WORKSHOP_UPLOAD_FOLDER)
+                item.image = save_image(new_image, WORKSHOP_UPLOAD_FOLDER, "workshop")
+            event_date_value = request.form.get("event_date", "").strip()
+            item.title_th = request.form.get("title_th", "").strip()
+            item.title_en = request.form.get("title_en", "").strip()
+            item.short_description_th = request.form.get("short_description_th", "").strip()
+            item.short_description_en = request.form.get("short_description_en", "").strip()
+            item.details_th = request.form.get("details_th", "").strip()
+            item.details_en = request.form.get("details_en", "").strip()
+            item.event_date = datetime.strptime(event_date_value, "%Y-%m-%d").date() if event_date_value else None
+            item.start_time = request.form.get("start_time", "").strip()
+            item.end_time = request.form.get("end_time", "").strip()
+            item.location_th = request.form.get("location_th", "").strip()
+            item.location_en = request.form.get("location_en", "").strip()
+            item.price = float(request.form.get("price") or 0)
+            item.capacity = int(request.form.get("capacity") or 0)
+            item.booking_url = request.form.get("booking_url", "").strip()
+            item.published = request.form.get("published") == "on"
+            item.featured = request.form.get("featured") == "on"
+            if not item.title_th or not item.title_en:
+                raise ValueError("กรุณากรอกชื่อกิจกรรมทั้งภาษาไทยและอังกฤษ")
+            db.session.commit()
+            flash("บันทึก Workshop แล้ว", "success")
+            return redirect(url_for("admin_workshops"))
+        except Exception as error:
+            db.session.rollback()
+            app.logger.exception("Edit workshop error")
+            flash(f"แก้ไข Workshop ไม่สำเร็จ: {error}", "error")
+    return render_template("admin/workshop_form.html", item=item)
+
+
+@app.route("/admin/workshops/<int:workshop_id>/delete", methods=["POST"])
+@login_required
+def admin_workshop_delete(workshop_id):
+    item = db.get_or_404(Workshop, workshop_id)
+    delete_image(item.image, WORKSHOP_UPLOAD_FOLDER)
+    db.session.delete(item)
+    db.session.commit()
+    flash("ลบ Workshop แล้ว", "success")
+    return redirect(url_for("admin_workshops"))
+
+
+# =====================================
 # Restaurant settings
 # =====================================
 
@@ -898,7 +1052,7 @@ def admin_gallery_delete(gallery_id):
     "/admin/settings",
     methods=["GET", "POST"]
 )
-@admin_required
+@login_required
 def admin_settings():
     setting = get_restaurant_setting()
 
@@ -953,6 +1107,18 @@ def admin_settings():
             ""
         ).strip()
 
+        raw_map_embed_url = request.form.get("map_embed_url", "")
+        cleaned_map_embed_url = clean_map_embed_url(raw_map_embed_url)
+        if raw_map_embed_url.strip() and cleaned_map_embed_url is None:
+            flash("Embed URL ไม่ถูกต้อง กรุณาคัดลอกจาก Google Maps → Share → Embed a map", "error")
+            return render_template("admin/settings.html", setting=setting), 400
+        setting.map_embed_url = cleaned_map_embed_url or ""
+
+        setting.map_url = request.form.get(
+            "map_url",
+            ""
+        ).strip()
+
         db.session.commit()
 
         flash(
@@ -977,6 +1143,15 @@ def admin_settings():
 def initialize_database():
     with app.app_context():
         db.create_all()
+
+        # Add newly introduced settings columns to existing databases.
+        from sqlalchemy import inspect, text
+        inspector = inspect(db.engine)
+        setting_columns = {column["name"] for column in inspector.get_columns("restaurant_settings")}
+        for column_name, column_type in (("map_embed_url", "TEXT"), ("map_url", "VARCHAR(1000)")):
+            if column_name not in setting_columns:
+                db.session.execute(text(f"ALTER TABLE restaurant_settings ADD COLUMN {column_name} {column_type}"))
+        db.session.commit()
 
         admin = User.query.filter_by(
             username="admin"
@@ -1009,4 +1184,4 @@ initialize_database()
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=os.getenv("FLASK_DEBUG") == "1")

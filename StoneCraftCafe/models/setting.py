@@ -59,3 +59,14 @@ class RestaurantSetting(db.Model):
         db.String(500),
         nullable=True
     )
+
+    map_embed_url = db.Column(
+        db.Text,
+        nullable=True
+    )
+
+    map_url = db.Column(
+        db.String(1000),
+        nullable=True
+    )
+

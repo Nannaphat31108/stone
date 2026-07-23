@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}{{ workshop.title_en }} | Stone Craft{% endblock %}
+
+{% block content %}
+<section class="workshop-detail-hero">
+    {% if workshop.image %}
+    <img src="{{ image_url(workshop.image, 'workshop') }}" alt="{{ workshop.title_th }}">
+    {% endif %}
+    <div class="workshop-detail-overlay"></div>
+    <div class="workshop-detail-heading">
+        <a href="{{ url_for('workshops') }}" class="text-link" data-th="← กลับหน้ากิจกรรม" data-en="← Back to experiences">← กลับหน้ากิจกรรม</a>
+        <span class="eyebrow">STONE CRAFT EXPERIENCE</span>
+        <h1><span class="lang-th">{{ workshop.title_th }}</span><span class="lang-en">{{ workshop.title_en }}</span></h1>
+    </div>
+</section>
+
+<section class="section workshop-detail-section">
+    <div class="workshop-detail-grid">
+        <div class="workshop-detail-copy">
+            <h2 data-th="รายละเอียดกิจกรรม" data-en="About this experience">รายละเอียดกิจกรรม</h2>
+            <div class="lang-th rich-copy">{{ workshop.details_th or workshop.short_description_th or '' }}</div>
+            <div class="lang-en rich-copy">{{ workshop.details_en or workshop.short_description_en or '' }}</div>
+        </div>
+        <aside class="workshop-info-card">
+            {% if workshop.event_date %}<div><small data-th="วันที่" data-en="Date">วันที่</small><strong>{{ workshop.event_date.strftime('%d / %m / %Y') }}</strong></div>{% endif %}
+            {% if workshop.start_time %}<div><small data-th="เวลา" data-en="Time">เวลา</small><strong>{{ workshop.start_time }}{% if workshop.end_time %} – {{ workshop.end_time }}{% endif %}</strong></div>{% endif %}
+            {% if workshop.location_th or workshop.location_en %}<div><small data-th="สถานที่" data-en="Location">สถานที่</small><strong><span class="lang-th">{{ workshop.location_th }}</span><span class="lang-en">{{ workshop.location_en }}</span></strong></div>{% endif %}
+            {% if workshop.capacity %}<div><small data-th="จำนวนผู้เข้าร่วม" data-en="Capacity">จำนวนผู้เข้าร่วม</small><strong>{{ workshop.capacity }} <span data-th="คน" data-en="guests">คน</span></strong></div>{% endif %}
+            <div><small data-th="ราคา" data-en="Price">ราคา</small><strong>{% if workshop.price and workshop.price > 0 %}฿{{ "{:,.0f}".format(workshop.price) }}{% else %}<span data-th="ฟรี" data-en="Free">ฟรี</span>{% endif %}</strong></div>
+            {% if workshop.booking_url %}
+            <a class="button button-gold" href="{{ workshop.booking_url }}" target="_blank" rel="noopener" data-th="จองกิจกรรม" data-en="Book this experience">จองกิจกรรม</a>
+            {% else %}
+            <a class="button button-gold" href="{{ url_for('contact') }}" data-th="สอบถามรายละเอียด" data-en="Ask for details">สอบถามรายละเอียด</a>
+            {% endif %}
+        </aside>
+    </div>
+</section>
+{% endblock %}

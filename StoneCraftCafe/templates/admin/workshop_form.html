@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'แก้ไข' if item else 'เพิ่ม' }} Workshop{% endblock %}
+{% block admin_content %}
+<div class="admin-header"><div><h1>{{ 'แก้ไข' if item else 'เพิ่ม' }} Workshop</h1><p>จัดการรายละเอียดกิจกรรมทั้งภาษาไทยและอังกฤษ</p></div><a class="edit-button" href="{{ url_for('admin_workshops') }}">กลับหน้ารายการ</a></div>
+<form class="admin-form" method="POST" enctype="multipart/form-data">
+<div class="form-grid"><div><label>ชื่อกิจกรรมภาษาไทย</label><input name="title_th" required value="{{ item.title_th if item else '' }}"></div><div><label>ชื่อกิจกรรมภาษาอังกฤษ</label><input name="title_en" required value="{{ item.title_en if item else '' }}"></div></div>
+<div class="form-grid"><div><label>คำโปรยภาษาไทย</label><textarea name="short_description_th" rows="3">{{ item.short_description_th if item else '' }}</textarea></div><div><label>คำโปรยภาษาอังกฤษ</label><textarea name="short_description_en" rows="3">{{ item.short_description_en if item else '' }}</textarea></div></div>
+<div class="form-grid"><div><label>รายละเอียดภาษาไทย</label><textarea name="details_th" rows="7">{{ item.details_th if item else '' }}</textarea></div><div><label>รายละเอียดภาษาอังกฤษ</label><textarea name="details_en" rows="7">{{ item.details_en if item else '' }}</textarea></div></div>
+<div class="form-grid"><div><label>วันที่</label><input type="date" name="event_date" value="{{ item.event_date.isoformat() if item and item.event_date else '' }}"></div><div><label>เวลาเริ่ม</label><input type="time" name="start_time" value="{{ item.start_time if item else '' }}"></div></div>
+<div class="form-grid"><div><label>เวลาสิ้นสุด</label><input type="time" name="end_time" value="{{ item.end_time if item else '' }}"></div><div><label>จำนวนผู้เข้าร่วมสูงสุด</label><input type="number" min="0" name="capacity" value="{{ item.capacity if item else 0 }}"></div></div>
+<div class="form-grid"><div><label>สถานที่ภาษาไทย</label><input name="location_th" value="{{ item.location_th if item else '' }}"></div><div><label>สถานที่ภาษาอังกฤษ</label><input name="location_en" value="{{ item.location_en if item else '' }}"></div></div>
+<div class="form-grid"><div><label>ราคา (บาท, ใส่ 0 หากฟรี)</label><input type="number" min="0" step="0.01" name="price" value="{{ item.price if item else 0 }}"></div><div><label>ลิงก์จองกิจกรรม</label><input type="url" name="booking_url" placeholder="https://..." value="{{ item.booking_url if item else '' }}"></div></div>
+<label>รูปปกกิจกรรม</label><input type="file" name="image" accept=".png,.jpg,.jpeg,.webp">{% if item and item.image %}<img class="form-preview-image" src="{{ image_url(item.image, 'workshop') }}" alt="">{% endif %}
+<label class="checkbox-label"><input type="checkbox" name="published" {% if not item or item.published %}checked{% endif %}> เผยแพร่บนเว็บไซต์</label>
+<label class="checkbox-label"><input type="checkbox" name="featured" {% if item and item.featured %}checked{% endif %}> แสดงเป็นกิจกรรมแนะนำ</label>
+<button class="admin-button" type="submit">บันทึกกิจกรรม</button>
+</form>
+{% endblock %}
