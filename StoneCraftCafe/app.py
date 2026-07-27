@@ -1,4 +1,5 @@
 import os
+import re
 from datetime import datetime
 from functools import wraps
 from pathlib import Path
@@ -13,6 +14,8 @@ from flask import (
     send_from_directory,
     url_for
 )
+from sqlalchemy import inspect, text
+
 from flask_login import (
     LoginManager,
     current_user,
@@ -77,6 +80,35 @@ def image_url(value, image_type="menu"):
 
     endpoint = endpoints.get(image_type, "uploaded_menu_image")
     return url_for(endpoint, filename=value)
+
+
+def normalize_google_maps_embed(value):
+    """Return a safe Google Maps embed URL from a URL or a complete iframe."""
+    value = (value or "").strip()
+
+    if not value:
+        return ""
+
+    iframe_match = re.search(
+        r"""src\s*=\s*["']([^"']+)["']""",
+        value,
+        flags=re.IGNORECASE,
+    )
+
+    if iframe_match:
+        value = iframe_match.group(1).strip()
+
+    allowed_prefixes = (
+        "https://www.google.com/maps/embed",
+        "https://maps.google.com/maps/embed",
+    )
+
+    if not value.startswith(allowed_prefixes):
+        raise ValueError(
+            "กรุณาวาง Google Maps Embed URL หรือโค้ด iframe จาก Google Maps"
+        )
+
+    return value
 
 
 def get_restaurant_setting():
@@ -1184,66 +1216,107 @@ def admin_settings():
     setting = get_restaurant_setting()
 
     if request.method == "POST":
-        setting.restaurant_name = request.form.get(
-            "restaurant_name",
-            ""
-        ).strip()
+        try:
+            setting.restaurant_name = request.form.get(
+                "restaurant_name",
+                ""
+            ).strip()
 
-        setting.phone = request.form.get(
-            "phone",
-            ""
-        ).strip()
+            setting.phone = request.form.get(
+                "phone",
+                ""
+            ).strip()
 
-        setting.email = request.form.get(
-            "email",
-            ""
-        ).strip()
+            setting.email = request.form.get(
+                "email",
+                ""
+            ).strip()
 
-        setting.address_th = request.form.get(
-            "address_th",
-            ""
-        ).strip()
+            setting.address_th = request.form.get(
+                "address_th",
+                ""
+            ).strip()
 
-        setting.address_en = request.form.get(
-            "address_en",
-            ""
-        ).strip()
+            setting.address_en = request.form.get(
+                "address_en",
+                ""
+            ).strip()
 
-        setting.facebook_url = request.form.get(
-            "facebook_url",
-            ""
-        ).strip()
+            setting.opening_hours = request.form.get(
+                "opening_hours",
+                ""
+            ).strip()
 
-        setting.instagram_url = request.form.get(
-            "instagram_url",
-            ""
-        ).strip()
+            setting.parking_info = request.form.get(
+                "parking_info",
+                ""
+            ).strip()
 
-        setting.tiktok_url = request.form.get(
-            "tiktok_url",
-            ""
-        ).strip()
+            setting.google_maps_url = request.form.get(
+                "google_maps_url",
+                ""
+            ).strip()
 
-        setting.line_url = request.form.get(
-            "line_url",
-            ""
-        ).strip()
+            setting.google_maps_embed = normalize_google_maps_embed(
+                request.form.get(
+                    "google_maps_embed",
+                    ""
+                )
+            )
 
-        setting.grab_url = request.form.get(
-            "grab_url",
-            ""
-        ).strip()
+            setting.facebook_url = request.form.get(
+                "facebook_url",
+                ""
+            ).strip()
 
-        db.session.commit()
+            setting.instagram_url = request.form.get(
+                "instagram_url",
+                ""
+            ).strip()
 
-        flash(
-            "บันทึกข้อมูลร้านเรียบร้อยแล้ว",
-            "success"
-        )
+            setting.tiktok_url = request.form.get(
+                "tiktok_url",
+                ""
+            ).strip()
 
-        return redirect(
-            url_for("admin_settings")
-        )
+            setting.line_url = request.form.get(
+                "line_url",
+                ""
+            ).strip()
+
+            setting.grab_url = request.form.get(
+                "grab_url",
+                ""
+            ).strip()
+
+            if not setting.restaurant_name:
+                raise ValueError("กรุณากรอกชื่อร้าน")
+
+            db.session.commit()
+
+            flash(
+                "บันทึกข้อมูลร้านเรียบร้อยแล้ว",
+                "success"
+            )
+
+            return redirect(
+                url_for("admin_settings")
+            )
+
+        except ValueError as error:
+            db.session.rollback()
+            flash(str(error), "error")
+
+        except Exception as error:
+            db.session.rollback()
+            app.logger.exception(
+                "Restaurant settings error: %s",
+                error,
+            )
+            flash(
+                f"บันทึกข้อมูลร้านไม่สำเร็จ: {error}",
+                "error",
+            )
 
     return render_template(
         "admin/settings.html",
@@ -1255,9 +1328,38 @@ def admin_settings():
 # Application initialization
 # =====================================
 
+def ensure_runtime_schema():
+    """Add columns introduced after the first deployment without Render Shell."""
+    inspector = inspect(db.engine)
+    table_names = set(inspector.get_table_names())
+
+    if "restaurant_settings" in table_names:
+        existing_columns = {
+            column["name"]
+            for column in inspector.get_columns("restaurant_settings")
+        }
+
+        missing_setting_columns = {
+            "opening_hours": "TEXT",
+            "parking_info": "TEXT",
+        }
+
+        for column_name, column_type in missing_setting_columns.items():
+            if column_name not in existing_columns:
+                db.session.execute(
+                    text(
+                        f'ALTER TABLE restaurant_settings '
+                        f'ADD COLUMN "{column_name}" {column_type}'
+                    )
+                )
+
+        db.session.commit()
+
+
 def initialize_database():
     with app.app_context():
         db.create_all()
+        ensure_runtime_schema()
 
         admin_username = os.environ.get("ADMIN_USERNAME", "admin")
         admin_password = os.environ.get("ADMIN_PASSWORD", "admin1234")

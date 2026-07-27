@@ -35,6 +35,16 @@ class RestaurantSetting(db.Model):
         nullable=True
     )
 
+    opening_hours = db.Column(
+        db.Text,
+        nullable=True
+    )
+
+    parking_info = db.Column(
+        db.Text,
+        nullable=True
+    )
+
     facebook_url = db.Column(
         db.String(500),
         nullable=True
@@ -60,6 +70,7 @@ class RestaurantSetting(db.Model):
         nullable=True
     )
 
+    # Existing database column names are preserved for compatibility.
     map_embed_url = db.Column(
         db.Text,
         nullable=True
@@ -70,3 +81,24 @@ class RestaurantSetting(db.Model):
         nullable=True
     )
 
+    @property
+    def google_maps_embed(self):
+        return self.map_embed_url or ""
+
+    @google_maps_embed.setter
+    def google_maps_embed(self, value):
+        self.map_embed_url = value or ""
+
+    @property
+    def google_maps_url(self):
+        return self.map_url or ""
+
+    @google_maps_url.setter
+    def google_maps_url(self, value):
+        self.map_url = value or ""
+
+    def __repr__(self):
+        return (
+            f"<RestaurantSetting id={self.id} "
+            f"name={self.restaurant_name!r}>"
+        )
