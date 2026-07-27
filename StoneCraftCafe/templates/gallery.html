@@ -3,70 +3,32 @@
 {% block title %}Gallery | Stone Craft Cafe & Bistro{% endblock %}
 
 {% block content %}
-<section class="page-hero gallery-page-hero">
-    <div class="page-hero-overlay"></div>
-    <div class="page-hero-content reveal">
-        <span class="eyebrow" data-th="แกลเลอรี" data-en="GALLERY">แกลเลอรี</span>
-        <h1 data-th="บรรยากาศ อาหาร<br>และช่วงเวลาที่น่าจดจำ"
-            data-en="Space, flavour,<br>and moments worth keeping.">
-            บรรยากาศ อาหาร<br>และช่วงเวลาที่น่าจดจำ
-        </h1>
-    </div>
-</section>
+<section class="gallery-empty-page">
+    <div class="section-shell">
+        <div class="gallery-empty-content reveal">
+            <span class="eyebrow" data-th="แกลเลอรี" data-en="GALLERY">แกลเลอรี</span>
 
-<section class="gallery-section section-shell">
-    <div class="section-heading reveal">
-        <div>
-            <span class="eyebrow" data-th="ภาพจาก Stone Craft" data-en="INSIDE STONE CRAFT">
-                ภาพจาก Stone Craft
-            </span>
-            <h2 data-th="ทุกมุมมีเรื่องราว"
-                data-en="Every frame tells a story.">
-                ทุกมุมมีเรื่องราว
-            </h2>
+            <img class="gallery-empty-logo"
+                 src="{{ url_for('static', filename='img/stonecraft-logo.webp') }}"
+                 alt="Stone Craft Cafe & Bistro">
+
+            <h1 data-th="เรื่องราวบทใหม่กำลังจะเริ่มต้น"
+                data-en="A new visual story is coming soon.">
+                เรื่องราวบทใหม่กำลังจะเริ่มต้น
+            </h1>
+
+            <p data-th="รูปภาพบรรยากาศ อาหาร และกิจกรรมของ Stone Craft จะถูกนำมาเผยแพร่เร็ว ๆ นี้"
+               data-en="Photos of our atmosphere, cuisine, and special events will be published soon.">
+                รูปภาพบรรยากาศ อาหาร และกิจกรรมของ Stone Craft จะถูกนำมาเผยแพร่เร็ว ๆ นี้
+            </p>
+
+            <div class="gallery-empty-actions">
+                <a href="{{ url_for('home') }}" class="button button-outline"
+                   data-th="กลับหน้าแรก" data-en="Back to Home">กลับหน้าแรก</a>
+                <a href="{{ url_for('reservation') }}" class="button button-gold"
+                   data-th="สำรองโต๊ะ" data-en="Reserve a Table">สำรองโต๊ะ</a>
+            </div>
         </div>
     </div>
-
-    <div class="masonry-gallery">
-        {% for image in gallery_items %}
-        <button class="gallery-item reveal"
-                type="button"
-                data-lightbox="{{ image_url(image.image, 'gallery') }}"
-                aria-label="{{ image.title_th or image.title_en or 'Gallery image' }}">
-
-            <img src="{{ image_url(image.image, 'gallery') }}"
-                 alt="{{ image.title_th or image.title_en or 'Stone Craft gallery' }}"
-                 loading="lazy">
-
-            <span class="gallery-overlay">
-                <strong>
-                    <span class="lang-th">{{ image.title_th or "Stone Craft" }}</span>
-                    <span class="lang-en">{{ image.title_en or "Stone Craft" }}</span>
-                </strong>
-                <small data-th="ดูภาพ" data-en="View image">ดูภาพ</small>
-            </span>
-        </button>
-        {% else %}
-        {% for image_number in range(1, 7) %}
-        <button class="gallery-item reveal"
-                type="button"
-                data-lightbox="{{ url_for('static', filename='images/gallery' ~ image_number ~ '.jpg') }}">
-            <img src="{{ url_for('static', filename='images/gallery' ~ image_number ~ '.jpg') }}"
-                 alt="Stone Craft gallery {{ image_number }}"
-                 loading="lazy"
-                 onerror="this.src='https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1200&q=85'">
-            <span class="gallery-overlay">
-                <strong>Stone Craft</strong>
-                <small data-th="ดูภาพ" data-en="View image">ดูภาพ</small>
-            </span>
-        </button>
-        {% endfor %}
-        {% endfor %}
-    </div>
 </section>
-
-<div class="lightbox" id="lightbox" aria-hidden="true">
-    <button class="lightbox-close" id="lightboxClose" type="button" aria-label="ปิด">×</button>
-    <img id="lightboxImage" src="" alt="Gallery preview">
-</div>
 {% endblock %}

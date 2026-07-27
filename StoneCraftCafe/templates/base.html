@@ -25,15 +25,21 @@
 
 <body>
 <div class="site-loader" id="siteLoader" aria-hidden="true">
-    <div class="loader-mark">SC</div>
+    <div class="loader-logo-wrap">
+        <img class="loader-logo"
+             src="{{ url_for('static', filename='img/stonecraft-logo.webp') }}"
+             alt="Stone Craft Cafe & Bistro">
+    </div>
 </div>
 
 <div class="scroll-progress" id="scrollProgress"></div>
 
 <header class="site-header" id="siteHeader">
     <div class="nav-shell">
-        <a class="brand" href="/" aria-label="Stone Craft home">
-            <span class="brand-mark">SC</span>
+        <a class="brand brand-with-logo" href="{{ url_for('home') }}" aria-label="Stone Craft home">
+            <img class="brand-logo"
+                 src="{{ url_for('static', filename='img/stonecraft-logo.webp') }}"
+                 alt="Stone Craft Cafe & Bistro">
             <span class="brand-copy">
                 <strong>{{ restaurant_setting.restaurant_name or "Stone Craft Cafe & Bistro" }}</strong>
                 <small>Cafe & Bistro</small>
@@ -97,6 +103,9 @@
 
     <div class="footer-grid">
         <div class="footer-brand">
+            <img class="footer-logo"
+                 src="{{ url_for('static', filename='img/stonecraft-logo.webp') }}"
+                 alt="Stone Craft Cafe & Bistro">
             <span class="eyebrow">STONE CRAFT</span>
             <h2 data-th="รสชาติที่ตั้งใจ บรรยากาศที่น่าจดจำ"
                 data-en="Considered flavours. Memorable moments.">
