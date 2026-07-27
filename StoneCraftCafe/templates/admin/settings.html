@@ -1,168 +1,125 @@
 {% extends "admin/base.html" %}
 
-{% block title %}
-ข้อมูลร้าน
-{% endblock %}
+{% block title %}ข้อมูลร้าน | Stone Craft Admin{% endblock %}
 
-{% block admin_content %}
-
-<div class="admin-header">
-    <div>
-        <h1>ข้อมูลร้าน</h1>
-        <p>แก้ไขข้อมูลติดต่อและ Social Media</p>
-    </div>
-</div>
-
-<form
-    class="admin-form"
-    method="POST"
->
-
-    <label for="restaurant_name">
-        ชื่อร้าน
-    </label>
-
-    <input
-        id="restaurant_name"
-        name="restaurant_name"
-        type="text"
-        value="{{ setting.restaurant_name or '' }}"
-        required
-    >
-
-    <div class="form-grid">
-
+{% block content %}
+<section class="admin-page settings-page">
+    <div class="admin-page-heading">
         <div>
-            <label for="phone">
-                เบอร์โทร
-            </label>
+            <span class="admin-eyebrow">RESTAURANT SETTINGS</span>
+            <h1>ข้อมูลร้าน</h1>
+            <p>แก้ไขข้อมูลติดต่อ โซเชียล และ Google Maps ที่แสดงบนเว็บไซต์</p>
+        </div>
+    </div>
 
-            <input
-                id="phone"
-                name="phone"
-                type="text"
-                value="{{ setting.phone or '' }}"
-            >
+    <form method="post" class="settings-form">
+        <div class="settings-card">
+            <h2>ข้อมูลพื้นฐาน</h2>
+
+            <div class="form-grid">
+                <div class="form-group form-group-full">
+                    <label for="restaurant_name">ชื่อร้าน</label>
+                    <input id="restaurant_name" name="restaurant_name" type="text"
+                           value="{{ setting.restaurant_name or '' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">เบอร์โทร</label>
+                    <input id="phone" name="phone" type="text"
+                           value="{{ setting.phone or '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">อีเมล</label>
+                    <input id="email" name="email" type="email"
+                           value="{{ setting.email or '' }}">
+                </div>
+
+                <div class="form-group form-group-full">
+                    <label for="address_th">ที่อยู่ภาษาไทย</label>
+                    <textarea id="address_th" name="address_th" rows="4">{{ setting.address_th or '' }}</textarea>
+                </div>
+
+                <div class="form-group form-group-full">
+                    <label for="address_en">ที่อยู่ภาษาอังกฤษ</label>
+                    <textarea id="address_en" name="address_en" rows="4">{{ setting.address_en or '' }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="opening_hours">เวลาเปิดร้าน</label>
+                    <textarea id="opening_hours" name="opening_hours" rows="4"
+                              placeholder="เช่น จันทร์–ศุกร์ 10:00–22:00">{{ setting.opening_hours or '' }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="parking_info">ข้อมูลที่จอดรถ</label>
+                    <textarea id="parking_info" name="parking_info" rows="4"
+                              placeholder="เช่น มีที่จอดรถหน้าร้าน">{{ setting.parking_info or '' }}</textarea>
+                </div>
+            </div>
         </div>
 
-        <div>
-            <label for="email">
-                อีเมล
-            </label>
+        <div class="settings-card">
+            <h2>Google Maps</h2>
 
-            <input
-                id="email"
-                name="email"
-                type="email"
-                value="{{ setting.email or '' }}"
-            >
+            <div class="form-grid">
+                <div class="form-group form-group-full">
+                    <label for="google_maps_url">Google Maps URL สำหรับเปิดเส้นทาง</label>
+                    <input id="google_maps_url" name="google_maps_url" type="url"
+                           value="{{ setting.google_maps_url or '' }}"
+                           placeholder="https://maps.app.goo.gl/...">
+                </div>
+
+                <div class="form-group form-group-full">
+                    <label for="google_maps_embed">Google Maps Embed URL หรือโค้ด iframe</label>
+                    <textarea id="google_maps_embed" name="google_maps_embed" rows="8"
+                              placeholder='<iframe src="https://www.google.com/maps/embed?pb=..." ...></iframe>'>{{ setting.google_maps_embed or '' }}</textarea>
+                    <small>
+                        วางได้ทั้ง URL ที่ขึ้นต้นด้วย https://www.google.com/maps/embed หรือโค้ด iframe เต็ม ระบบจะดึงเฉพาะค่า src ให้อัตโนมัติ
+                    </small>
+                </div>
+            </div>
+
+            {% if setting.google_maps_embed %}
+            <div class="map-preview">
+                <h3>ตัวอย่างแผนที่</h3>
+                <iframe src="{{ setting.google_maps_embed }}"
+                        title="Google Maps preview"
+                        loading="lazy"
+                        allowfullscreen
+                        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+            {% endif %}
         </div>
 
-    </div>
+        <div class="settings-card">
+            <h2>โซเชียลและบริการเดลิเวอรี</h2>
 
-    <label for="address_th">
-        ที่อยู่ภาษาไทย
-    </label>
+            <div class="form-grid">
+                {% for name, label in [
+                    ('facebook_url', 'Facebook URL'),
+                    ('instagram_url', 'Instagram URL'),
+                    ('tiktok_url', 'TikTok URL'),
+                    ('line_url', 'LINE URL'),
+                    ('grab_url', 'GrabFood URL')
+                ] %}
+                <div class="form-group">
+                    <label for="{{ name }}">{{ label }}</label>
+                    <input id="{{ name }}" name="{{ name }}" type="url"
+                           value="{{ setting|attr(name) or '' }}"
+                           placeholder="https://...">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
 
-    <textarea
-        id="address_th"
-        name="address_th"
-        rows="4"
-    >{{ setting.address_th or '' }}</textarea>
+        <div class="settings-actions">
+            <button type="submit" class="admin-primary-button">บันทึกข้อมูลร้าน</button>
+        </div>
+    </form>
+</section>
 
-    <label for="address_en">
-        ที่อยู่ภาษาอังกฤษ
-    </label>
-
-    <textarea
-        id="address_en"
-        name="address_en"
-        rows="4"
-    >{{ setting.address_en or '' }}</textarea>
-
-    <label for="facebook_url">
-        Facebook URL
-    </label>
-
-    <input
-        id="facebook_url"
-        name="facebook_url"
-        type="url"
-        value="{{ setting.facebook_url or '' }}"
-        placeholder="https://..."
-    >
-
-    <label for="instagram_url">
-        Instagram URL
-    </label>
-
-    <input
-        id="instagram_url"
-        name="instagram_url"
-        type="url"
-        value="{{ setting.instagram_url or '' }}"
-        placeholder="https://..."
-    >
-
-    <label for="tiktok_url">
-        TikTok URL
-    </label>
-
-    <input
-        id="tiktok_url"
-        name="tiktok_url"
-        type="url"
-        value="{{ setting.tiktok_url or '' }}"
-        placeholder="https://..."
-    >
-
-    <label for="line_url">
-        LINE URL
-    </label>
-
-    <input
-        id="line_url"
-        name="line_url"
-        type="url"
-        value="{{ setting.line_url or '' }}"
-        placeholder="https://..."
-    >
-
-    <label for="grab_url">
-        GrabFood URL
-    </label>
-
-    <input
-        id="grab_url"
-        name="grab_url"
-        type="url"
-        value="{{ setting.grab_url or '' }}"
-        placeholder="https://..."
-    >
-
-
-    <div class="admin-subsection">
-        <h2>Google Maps</h2>
-        <p class="field-help">นำค่า Embed URL จาก Google Maps → แชร์ → ฝังแผนที่ → คัดลอก HTML ระบบรองรับทั้ง URL และโค้ด iframe</p>
-
-        <label for="map_embed_url">Google Maps Embed URL</label>
-        <textarea id="map_embed_url" name="map_embed_url" rows="4" placeholder="https://www.google.com/maps/embed?pb=...">{{ setting.map_embed_url or '' }}</textarea>
-
-        <label for="map_url">ลิงก์เปิดแผนที่ / นำทาง</label>
-        <input id="map_url" name="map_url" type="url" value="{{ setting.map_url or '' }}" placeholder="https://maps.app.goo.gl/...">
-
-        {% if setting.map_embed_url %}
-        <div class="map-preview-admin"><iframe src="{{ setting.map_embed_url }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="ตัวอย่างแผนที่"></iframe></div>
-        {% endif %}
-    </div>
-
-    <button
-        class="admin-button"
-        type="submit"
-    >
-        บันทึกข้อมูลร้าน
-    </button>
-
-</form>
-
+<style>
+.settings-page{max-width:1200px;margin:0 auto;padding:36px 24px 80px}.admin-page-heading{margin-bottom:30px}.admin-eyebrow{color:#d3ad65;font-size:.78rem;letter-spacing:.16em}.admin-page-heading h1{margin:8px 0;font-size:clamp(2.2rem,5vw,4rem)}.admin-page-heading p{color:#aaa}.settings-form{display:grid;gap:24px}.settings-card{padding:clamp(24px,4vw,44px);border:1px solid rgba(211,173,101,.22);background:#151515}.settings-card h2{margin:0 0 26px;color:#d3ad65}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}.form-group{display:flex;flex-direction:column;gap:9px}.form-group-full{grid-column:1/-1}.form-group label{font-weight:600}.form-group input,.form-group textarea{width:100%;box-sizing:border-box;padding:14px 16px;border:1px solid #444;border-radius:6px;background:#222;color:#fff;font:inherit}.form-group textarea{resize:vertical}.form-group small{color:#999;line-height:1.6}.map-preview{margin-top:28px}.map-preview iframe{display:block;width:100%;height:420px;border:0}.settings-actions{display:flex;justify-content:flex-end}.admin-primary-button{padding:15px 26px;border:0;background:#d3ad65;color:#111;font:inherit;font-weight:700;cursor:pointer}@media(max-width:760px){.form-grid{grid-template-columns:1fr}.form-group-full{grid-column:auto}.settings-actions,.admin-primary-button{width:100%}}
+</style>
 {% endblock %}

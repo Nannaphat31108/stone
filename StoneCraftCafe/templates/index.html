@@ -14,14 +14,8 @@
         </span>
 
         <h1>
-            <span data-th="มากกว่ามื้ออาหาร"
-                  data-en="More than dining.">
-                มากกว่ามื้ออาหาร
-            </span>
-            <em data-th="คือช่วงเวลาที่น่าจดจำ"
-                data-en="A moment to remember.">
-                คือช่วงเวลาที่น่าจดจำ
-            </em>
+            <span data-th="มากกว่ามื้ออาหาร" data-en="More than dining.">มากกว่ามื้ออาหาร</span>
+            <em data-th="คือช่วงเวลาที่น่าจดจำ" data-en="A moment to remember.">คือช่วงเวลาที่น่าจดจำ</em>
         </h1>
 
         <p data-th="สัมผัสอาหารร่วมสมัย กาแฟสเปเชียลตี้ และบรรยากาศหรูที่อบอุ่นในแบบ Stone Craft"
@@ -30,14 +24,10 @@
         </p>
 
         <div class="hero-actions">
-            <a href="/reservation" class="button button-gold"
-               data-th="สำรองโต๊ะ" data-en="Reserve a Table">
-                สำรองโต๊ะ
-            </a>
-            <a href="/menu" class="button button-ghost"
-               data-th="ดูเมนู" data-en="Explore the Menu">
-                ดูเมนู
-            </a>
+            <a href="{{ url_for('reservation') }}" class="button button-gold"
+               data-th="สำรองโต๊ะ" data-en="Reserve a Table">สำรองโต๊ะ</a>
+            <a href="{{ url_for('menu') }}" class="button button-ghost"
+               data-th="ดูเมนู" data-en="Explore the Menu">ดูเมนู</a>
         </div>
     </div>
 
@@ -49,55 +39,35 @@
 
 <section class="intro-section section-shell">
     <div class="intro-number reveal">01</div>
-
     <div class="intro-copy reveal">
-        <span class="eyebrow" data-th="แนวคิดของเรา" data-en="OUR PHILOSOPHY">
-            แนวคิดของเรา
-        </span>
-
-        <h2 data-th="เรียบง่ายอย่างมีรายละเอียด"
-            data-en="Simplicity, thoughtfully refined.">
-            เรียบง่ายอย่างมีรายละเอียด
-        </h2>
+        <span class="eyebrow" data-th="แนวคิดของเรา" data-en="OUR PHILOSOPHY">แนวคิดของเรา</span>
+        <h2 data-th="เรียบง่ายอย่างมีรายละเอียด" data-en="Simplicity, thoughtfully refined.">เรียบง่ายอย่างมีรายละเอียด</h2>
     </div>
-
     <div class="intro-text reveal">
         <p data-th="เราเชื่อว่าอาหารที่ดีเริ่มจากวัตถุดิบที่ดี ผ่านความพิถีพิถัน และจบลงด้วยการบริการที่ทำให้ทุกคนรู้สึกเป็นคนพิเศษ"
            data-en="We believe memorable dining begins with exceptional ingredients, precise craft, and hospitality that makes every guest feel considered.">
             เราเชื่อว่าอาหารที่ดีเริ่มจากวัตถุดิบที่ดี ผ่านความพิถีพิถัน และจบลงด้วยการบริการที่ทำให้ทุกคนรู้สึกเป็นคนพิเศษ
         </p>
-
-        <a class="text-link" href="/about"
-           data-th="อ่านเรื่องราวของเรา" data-en="Discover our story">
-            อ่านเรื่องราวของเรา
-        </a>
+        <a class="text-link" href="{{ url_for('about') }}"
+           data-th="อ่านเรื่องราวของเรา" data-en="Discover our story">อ่านเรื่องราวของเรา</a>
     </div>
 </section>
 
 <section class="signature-section">
     <div class="section-heading section-shell reveal">
         <div>
-            <span class="eyebrow" data-th="เมนูซิกเนเจอร์" data-en="SIGNATURE SELECTION">
-                เมนูซิกเนเจอร์
-            </span>
-            <h2 data-th="รสชาติที่นิยาม Stone Craft"
-                data-en="Flavours that define Stone Craft.">
-                รสชาติที่นิยาม Stone Craft
-            </h2>
+            <span class="eyebrow" data-th="เมนูซิกเนเจอร์" data-en="SIGNATURE SELECTION">เมนูซิกเนเจอร์</span>
+            <h2 data-th="รสชาติที่นิยาม Stone Craft" data-en="Flavours that define Stone Craft.">รสชาติที่นิยาม Stone Craft</h2>
         </div>
-
-        <a class="text-link" href="/menu"
-           data-th="ดูเมนูทั้งหมด" data-en="View full menu">
-            ดูเมนูทั้งหมด
-        </a>
+        <a class="text-link" href="{{ url_for('menu') }}"
+           data-th="ดูเมนูทั้งหมด" data-en="View full menu">ดูเมนูทั้งหมด</a>
     </div>
 
     <div class="signature-grid section-shell">
         {% for item in featured_menu %}
         <article class="signature-card {% if loop.first %}signature-card-large{% endif %} reveal">
             {% if item.image %}
-            <img src="{{ image_url(item.image, 'menu') }}"
-                 alt="{{ item.name_th or item.name_en }}" loading="lazy">
+            <img src="{{ image_url(item.image, 'menu') }}" alt="{{ item.name_th or item.name_en }}" loading="lazy">
             {% else %}
             <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=1400&q=85"
                  alt="{{ item.name_th or item.name_en }}" loading="lazy">
@@ -105,21 +75,18 @@
             <div class="card-shade"></div>
             <div class="signature-card-content">
                 <span>{{ '%02d'|format(loop.index) }} / {{ item.category or 'SIGNATURE' }}</span>
-                <h3>
-                    <span class="lang-th">{{ item.name_th }}</span>
-                    <span class="lang-en">{{ item.name_en }}</span>
-                </h3>
-                <p>
-                    <span class="lang-th">{{ item.description_th or '' }}</span>
-                    <span class="lang-en">{{ item.description_en or '' }}</span>
-                </p>
+                <h3><span class="lang-th">{{ item.name_th }}</span><span class="lang-en">{{ item.name_en }}</span></h3>
+                <p><span class="lang-th">{{ item.description_th or '' }}</span><span class="lang-en">{{ item.description_en or '' }}</span></p>
                 <strong>฿ {{ '%.0f'|format(item.price) }}</strong>
             </div>
         </article>
         {% else %}
         <div class="empty-state reveal">
             <h3 data-th="ยังไม่มีเมนูแนะนำ" data-en="No featured menu yet.">ยังไม่มีเมนูแนะนำ</h3>
-            <p data-th="เพิ่มเมนูที่เปิดขายจากหน้าแอดมิน แล้วข้อมูลจะปรากฏตรงนี้" data-en="Add available menu items in admin and they will appear here.">เพิ่มเมนูที่เปิดขายจากหน้าแอดมิน แล้วข้อมูลจะปรากฏตรงนี้</p>
+            <p data-th="เพิ่มเมนูที่เปิดขายจากหน้าแอดมิน แล้วข้อมูลจะปรากฏตรงนี้"
+               data-en="Add available menu items in admin and they will appear here.">
+                เพิ่มเมนูที่เปิดขายจากหน้าแอดมิน แล้วข้อมูลจะปรากฏตรงนี้
+            </p>
         </div>
         {% endfor %}
     </div>
@@ -127,57 +94,32 @@
 
 <section class="experience-banner experience-banner-no-image">
     <div class="experience-content reveal">
-        <span class="eyebrow" data-th="พื้นที่สำหรับทุกโอกาส"
-              data-en="A PLACE FOR EVERY OCCASION">
-            พื้นที่สำหรับทุกโอกาส
-        </span>
-
-        <h2 data-th="ตั้งแต่มื้อสายสบาย ๆ จนถึงค่ำคืนพิเศษ"
-            data-en="From slow brunches to memorable evenings.">
-            ตั้งแต่มื้อสายสบาย ๆ จนถึงค่ำคืนพิเศษ
-        </h2>
-
+        <span class="eyebrow" data-th="พื้นที่สำหรับทุกโอกาส" data-en="A PLACE FOR EVERY OCCASION">พื้นที่สำหรับทุกโอกาส</span>
+        <h2 data-th="ตั้งแต่มื้อสายสบาย ๆ จนถึงค่ำคืนพิเศษ" data-en="From slow brunches to memorable evenings.">ตั้งแต่มื้อสายสบาย ๆ จนถึงค่ำคืนพิเศษ</h2>
         <p data-th="ทุกมุมถูกออกแบบให้สวยงามแต่ไม่ห่างเหิน เหมาะทั้งสำหรับครอบครัว คู่รัก การพบปะ และงานเฉลิมฉลอง"
            data-en="Every corner is refined yet welcoming — ideal for families, dates, gatherings, and celebrations.">
             ทุกมุมถูกออกแบบให้สวยงามแต่ไม่ห่างเหิน เหมาะทั้งสำหรับครอบครัว คู่รัก การพบปะ และงานเฉลิมฉลอง
         </p>
-
-        <a class="button button-outline" href="/gallery"
-           data-th="ชมบรรยากาศ" data-en="Explore the space">
-            ชมบรรยากาศ
-        </a>
+        <a class="button button-outline" href="{{ url_for('gallery') }}"
+           data-th="ชมบรรยากาศ" data-en="Explore the space">ชมบรรยากาศ</a>
     </div>
 </section>
 
 <section class="stats-section section-shell">
-    <div class="stat reveal">
-        <strong class="counter" data-target="35">0</strong>
-        <span data-th="เมนูซิกเนเจอร์" data-en="Signature dishes">เมนูซิกเนเจอร์</span>
-    </div>
-    <div class="stat reveal">
-        <strong class="counter" data-target="12">0</strong>
-        <span data-th="พาร์ตเนอร์วัตถุดิบท้องถิ่น" data-en="Local producers">พาร์ตเนอร์วัตถุดิบท้องถิ่น</span>
-    </div>
-    <div class="stat reveal">
-        <strong class="counter" data-target="25000">0</strong>
-        <span data-th="มื้อแห่งความประทับใจ" data-en="Dining moments">มื้อแห่งความประทับใจ</span>
-    </div>
-    <div class="stat reveal">
-        <strong>4.9</strong>
-        <span data-th="คะแนนจากลูกค้า" data-en="Guest rating">คะแนนจากลูกค้า</span>
-    </div>
+    <div class="stat reveal"><strong class="counter" data-target="35">0</strong><span data-th="เมนูซิกเนเจอร์" data-en="Signature dishes">เมนูซิกเนเจอร์</span></div>
+    <div class="stat reveal"><strong class="counter" data-target="12">0</strong><span data-th="พาร์ตเนอร์วัตถุดิบท้องถิ่น" data-en="Local producers">พาร์ตเนอร์วัตถุดิบท้องถิ่น</span></div>
+    <div class="stat reveal"><strong class="counter" data-target="25000">0</strong><span data-th="มื้อแห่งความประทับใจ" data-en="Dining moments">มื้อแห่งความประทับใจ</span></div>
+    <div class="stat reveal"><strong>4.9</strong><span data-th="คะแนนจากลูกค้า" data-en="Guest rating">คะแนนจากลูกค้า</span></div>
 </section>
 
 <section class="testimonial-section">
     <div class="section-shell">
         <div class="testimonial-quote reveal">“</div>
-
         <blockquote class="reveal"
                     data-th="อาหารมีรายละเอียด บรรยากาศสวย และทีมงานดูแลอย่างพอดี เป็นร้านที่อยากกลับมาอีกครั้ง"
                     data-en="Beautifully considered food, a sophisticated atmosphere, and genuinely attentive service. A place worth returning to.">
             อาหารมีรายละเอียด บรรยากาศสวย และทีมงานดูแลอย่างพอดี เป็นร้านที่อยากกลับมาอีกครั้ง
         </blockquote>
-
         <p class="testimonial-author reveal">— A Stone Craft Guest</p>
     </div>
 </section>
@@ -185,23 +127,14 @@
 <section class="reservation-cta">
     <div class="reservation-cta-image"></div>
     <div class="reservation-cta-content reveal">
-        <span class="eyebrow" data-th="การต้อนรับเริ่มต้นที่นี่"
-              data-en="YOUR TABLE AWAITS">
-            การต้อนรับเริ่มต้นที่นี่
-        </span>
-
-        <h2 data-th="ให้เราดูแลมื้อพิเศษของคุณ"
-            data-en="Let us host your next occasion.">
-            ให้เราดูแลมื้อพิเศษของคุณ
-        </h2>
-
-        <a class="button button-gold" href="/reservation"
-           data-th="จองโต๊ะตอนนี้" data-en="Book your table">
-            จองโต๊ะตอนนี้
-        </a>
+        <span class="eyebrow" data-th="การต้อนรับเริ่มต้นที่นี่" data-en="YOUR TABLE AWAITS">การต้อนรับเริ่มต้นที่นี่</span>
+        <h2 data-th="ให้เราดูแลมื้อพิเศษของคุณ" data-en="Let us host your next occasion.">ให้เราดูแลมื้อพิเศษของคุณ</h2>
+        <a class="button button-gold" href="{{ url_for('reservation') }}"
+           data-th="จองโต๊ะตอนนี้" data-en="Book your table">จองโต๊ะตอนนี้</a>
     </div>
 </section>
 
+<!-- Google Maps อยู่ล่างสุดของหน้าแรก -->
 <section class="home-location-section">
     <div class="section-shell">
         <div class="section-heading home-location-heading reveal">
@@ -209,35 +142,29 @@
                 <span class="eyebrow" data-th="พบกับเรา" data-en="FIND US">พบกับเรา</span>
                 <h2 data-th="เดินทางมาสัมผัส Stone Craft" data-en="Visit Stone Craft.">เดินทางมาสัมผัส Stone Craft</h2>
             </div>
-            <a class="text-link" href="{{ url_for('contact') }}" data-th="ดูข้อมูลการเดินทาง" data-en="View contact details">ดูข้อมูลการเดินทาง</a>
+            <a class="text-link" href="{{ url_for('contact') }}"
+               data-th="ดูข้อมูลการเดินทาง" data-en="View contact details">ดูข้อมูลการเดินทาง</a>
         </div>
 
         <div class="home-location-grid">
             <div class="home-map reveal">
                 {% if restaurant_setting.google_maps_embed %}
-                    {% set map_value = restaurant_setting.google_maps_embed | trim %}
-                    {% if '<iframe' in map_value %}
-                        <div class="embedded-map-code">{{ map_value | safe }}</div>
-                    {% else %}
-                        <iframe
-                            src="{{ map_value }}"
-                            title="Stone Craft Cafe & Bistro Google Maps"
-                            width="100%"
-                            height="520"
-                            style="border:0;"
-                            loading="lazy"
-                            allowfullscreen
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    {% endif %}
+                <iframe src="{{ restaurant_setting.google_maps_embed }}"
+                        title="Stone Craft Cafe & Bistro Google Maps"
+                        loading="lazy"
+                        allowfullscreen
+                        referrerpolicy="strict-origin-when-cross-origin"></iframe>
                 {% else %}
-                    <div class="map-placeholder">
-                        <div>
-                            <span class="map-placeholder-icon">⌖</span>
-                            <h3 data-th="ยังไม่ได้ตั้งค่าแผนที่" data-en="Map is not configured yet.">ยังไม่ได้ตั้งค่าแผนที่</h3>
-                            <p data-th="เพิ่ม Google Maps Embed URL ได้จากหน้าจัดการข้อมูลร้าน" data-en="Add a Google Maps Embed URL from the restaurant settings dashboard.">เพิ่ม Google Maps Embed URL ได้จากหน้าจัดการข้อมูลร้าน</p>
-                        </div>
+                <div class="map-placeholder">
+                    <div>
+                        <span class="map-placeholder-icon">⌖</span>
+                        <h3 data-th="ยังไม่ได้ตั้งค่าแผนที่" data-en="Map is not configured yet.">ยังไม่ได้ตั้งค่าแผนที่</h3>
+                        <p data-th="เพิ่ม Google Maps Embed URL ได้จากหน้าจัดการข้อมูลร้าน"
+                           data-en="Add a Google Maps Embed URL from the restaurant settings dashboard.">
+                            เพิ่ม Google Maps Embed URL ได้จากหน้าจัดการข้อมูลร้าน
+                        </p>
                     </div>
+                </div>
                 {% endif %}
             </div>
 
@@ -251,35 +178,31 @@
                 </div>
 
                 {% if restaurant_setting.opening_hours %}
-                <div class="location-detail">
-                    <span class="location-detail-label" data-th="เวลาเปิดให้บริการ" data-en="Opening Hours">เวลาเปิดให้บริการ</span>
-                    <p>{{ restaurant_setting.opening_hours }}</p>
-                </div>
+                <div class="location-detail"><span class="location-detail-label" data-th="เวลาเปิดให้บริการ" data-en="Opening Hours">เวลาเปิดให้บริการ</span><p>{{ restaurant_setting.opening_hours }}</p></div>
                 {% endif %}
 
                 {% if restaurant_setting.parking_info %}
-                <div class="location-detail">
-                    <span class="location-detail-label" data-th="ที่จอดรถ" data-en="Parking">ที่จอดรถ</span>
-                    <p>{{ restaurant_setting.parking_info }}</p>
-                </div>
+                <div class="location-detail"><span class="location-detail-label" data-th="ที่จอดรถ" data-en="Parking">ที่จอดรถ</span><p>{{ restaurant_setting.parking_info }}</p></div>
                 {% endif %}
 
                 {% if restaurant_setting.phone %}
-                <div class="location-detail">
-                    <span class="location-detail-label" data-th="โทรศัพท์" data-en="Telephone">โทรศัพท์</span>
-                    <p><a href="tel:{{ restaurant_setting.phone }}">{{ restaurant_setting.phone }}</a></p>
-                </div>
+                <div class="location-detail"><span class="location-detail-label" data-th="โทรศัพท์" data-en="Telephone">โทรศัพท์</span><p><a href="tel:{{ restaurant_setting.phone }}">{{ restaurant_setting.phone }}</a></p></div>
                 {% endif %}
 
                 <div class="location-actions">
                     {% if restaurant_setting.google_maps_url %}
-                    <a href="{{ restaurant_setting.google_maps_url }}" class="button button-gold" target="_blank" rel="noopener noreferrer" data-th="เปิดเส้นทางใน Google Maps" data-en="Open in Google Maps">เปิดเส้นทางใน Google Maps</a>
+                    <a href="{{ restaurant_setting.google_maps_url }}" class="button button-gold" target="_blank" rel="noopener noreferrer"
+                       data-th="เปิดเส้นทางใน Google Maps" data-en="Open in Google Maps">เปิดเส้นทางใน Google Maps</a>
                     {% endif %}
-                    <a href="{{ url_for('contact') }}" class="button button-outline" data-th="ข้อมูลติดต่อ" data-en="Contact Us">ข้อมูลติดต่อ</a>
+                    <a href="{{ url_for('contact') }}" class="button button-outline"
+                       data-th="ข้อมูลติดต่อ" data-en="Contact Us">ข้อมูลติดต่อ</a>
                 </div>
             </aside>
         </div>
     </div>
 </section>
 
+<style>
+.experience-banner-no-image{display:flex;min-height:auto;padding:clamp(80px,10vw,140px) 0;justify-content:center;background:radial-gradient(circle at 80% 20%,rgba(201,164,97,.09),transparent 35%),#12100d}.experience-banner-no-image .experience-content{width:min(1100px,calc(100% - 48px));max-width:none;margin:0 auto;padding:0}.home-location-section{padding:clamp(80px,10vw,150px) 0;background:#0f0e0c}.home-location-heading{margin-bottom:40px}.home-location-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(330px,.55fr);min-height:520px;border:1px solid rgba(201,164,97,.22);background:#151310}.home-map{min-height:520px;background:#111}.home-map iframe{display:block;width:100%;height:100%;min-height:520px;border:0}.home-location-info{display:flex;flex-direction:column;justify-content:center;padding:clamp(38px,5vw,72px);border-left:1px solid rgba(201,164,97,.22);background:#171512}.home-location-info h3{margin:12px 0 24px;color:#f3eee5;font-size:clamp(1.8rem,3vw,2.8rem)}.location-address p,.location-detail p{color:rgba(243,238,229,.75);line-height:1.8}.location-detail{padding:18px 0;border-bottom:1px solid rgba(255,255,255,.09)}.location-detail-label{display:block;margin-bottom:6px;color:#c9a461;font-size:.78rem;letter-spacing:.1em}.location-detail a{color:inherit;text-decoration:none}.location-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}.map-placeholder{display:grid;min-height:520px;padding:40px;place-items:center;text-align:center}.map-placeholder-icon{display:block;color:#c9a461;font-size:3rem}@media(max-width:980px){.home-location-grid{grid-template-columns:1fr}.home-location-info{border-top:1px solid rgba(201,164,97,.22);border-left:0}}@media(max-width:640px){.home-map,.home-map iframe,.map-placeholder{min-height:390px}.home-location-info{padding:34px 24px}.location-actions{flex-direction:column}.location-actions .button{width:100%}}
+</style>
 {% endblock %}
