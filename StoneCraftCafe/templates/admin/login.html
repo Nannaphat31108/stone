@@ -1,74 +1,132 @@
 {% extends "admin/base.html" %}
 
 {% block title %}
-เข้าสู่ระบบผู้ดูแล
+เข้าสู่ระบบผู้ดูแล | Stone Craft
 {% endblock %}
 
-{% block login_content %}
+{% block admin_content %}
+<style>
+.admin-login-page {
+    min-height: calc(100vh - 140px);
+    display: grid;
+    place-items: center;
+    padding: 40px 16px;
+}
 
-<div class="login-page">
+.admin-login-card {
+    width: min(100%, 460px);
+    padding: 36px;
+    border: 1px solid rgba(211, 173, 101, 0.35);
+    background: #151515;
+}
 
-    <form
-        class="login-card"
-        method="POST"
-        action="{{ url_for('admin_login') }}"
-    >
+.admin-login-logo {
+    display: block;
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin: 0 auto 22px;
+}
 
-        <div class="login-brand">
-            <img class="login-logo"
-                 src="{{ url_for('static', filename='img/stonecraft-logo.webp') }}"
-                 alt="Stone Craft Cafe & Bistro">
-            <h1>Stone Craft</h1>
-            <p>Cafe & Bistro Admin</p>
-        </div>
+.admin-login-card h1 {
+    margin: 0 0 8px;
+    text-align: center;
+    font-size: 2rem;
+}
 
-        <div class="form-group">
-            <label for="username">
-                ชื่อผู้ใช้
-            </label>
+.admin-login-description {
+    margin: 0 0 28px;
+    color: #aaa;
+    text-align: center;
+}
 
-            <input
-                id="username"
-                name="username"
-                type="text"
-                placeholder="กรอกชื่อผู้ใช้"
-                required
-                autofocus
-                autocomplete="username"
-            >
-        </div>
+.admin-login-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+}
 
-        <div class="form-group">
-            <label for="password">
-                รหัสผ่าน
-            </label>
+.admin-login-field label {
+    color: #e8d29f;
+}
 
-            <input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="กรอกรหัสผ่าน"
-                required
-                autocomplete="current-password"
-            >
-        </div>
+.admin-login-field input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #444;
+    background: #222;
+    color: #fff;
+    font: inherit;
+}
 
-        <button
-            class="login-button"
-            type="submit"
-        >
-            เข้าสู่ระบบ
-        </button>
+.admin-login-button {
+    width: 100%;
+    margin-top: 8px;
+    padding: 15px;
+    border: 0;
+    background: #d3ad65;
+    color: #111;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
 
-        <a
-            class="back-home"
-            href="{{ url_for('home') }}"
-        >
-            ← กลับหน้าเว็บไซต์
+.admin-login-back {
+    display: block;
+    margin-top: 20px;
+    color: #aaa;
+    text-align: center;
+    text-decoration: none;
+}
+</style>
+
+<section class="admin-login-page">
+    <div class="admin-login-card">
+        <img class="admin-login-logo"
+             src="{{ url_for('static', filename='img/stonecraft-logo.webp') }}"
+             alt="Stone Craft Cafe & Bistro">
+
+        <h1>เข้าสู่ระบบผู้ดูแล</h1>
+
+        <p class="admin-login-description">
+            กรอกชื่อผู้ใช้และรหัสผ่านเพื่อเข้าสู่ระบบจัดการร้าน
+        </p>
+
+        <form method="post"
+              action="{{ url_for('admin_login') }}">
+
+            <div class="admin-login-field">
+                <label for="username">ชื่อผู้ใช้</label>
+
+                <input id="username"
+                       name="username"
+                       type="text"
+                       autocomplete="username"
+                       required
+                       autofocus>
+            </div>
+
+            <div class="admin-login-field">
+                <label for="password">รหัสผ่าน</label>
+
+                <input id="password"
+                       name="password"
+                       type="password"
+                       autocomplete="current-password"
+                       required>
+            </div>
+
+            <button class="admin-login-button"
+                    type="submit">
+                เข้าสู่ระบบ
+            </button>
+        </form>
+
+        <a class="admin-login-back"
+           href="{{ url_for('home') }}">
+            กลับหน้าเว็บไซต์
         </a>
-
-    </form>
-
-</div>
-
+    </div>
+</section>
 {% endblock %}
