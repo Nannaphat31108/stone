@@ -1328,32 +1328,63 @@ def admin_settings():
 # Application initialization
 # =====================================
 
-def ensure_runtime_schema():
-    """Add columns introduced after the first deployment without Render Shell."""
+def _add_missing_columns(table_name, columns):
+    """Add missing columns to an existing table using portable SQL."""
     inspector = inspect(db.engine)
     table_names = set(inspector.get_table_names())
 
-    if "restaurant_settings" in table_names:
-        existing_columns = {
-            column["name"]
-            for column in inspector.get_columns("restaurant_settings")
-        }
+    if table_name not in table_names:
+        return
 
-        missing_setting_columns = {
+    existing_columns = {
+        column["name"]
+        for column in inspector.get_columns(table_name)
+    }
+
+    for column_name, column_type in columns.items():
+        if column_name in existing_columns:
+            continue
+
+        db.session.execute(
+            text(
+                f'ALTER TABLE "{table_name}" '
+                f'ADD COLUMN "{column_name}" {column_type}'
+            )
+        )
+
+    db.session.commit()
+
+
+def ensure_runtime_schema():
+    """Update older deployed tables without requiring Render Shell or manual SQL."""
+    _add_missing_columns(
+        "restaurant_settings",
+        {
             "opening_hours": "TEXT",
             "parking_info": "TEXT",
-        }
+        },
+    )
 
-        for column_name, column_type in missing_setting_columns.items():
-            if column_name not in existing_columns:
-                db.session.execute(
-                    text(
-                        f'ALTER TABLE restaurant_settings '
-                        f'ADD COLUMN "{column_name}" {column_type}'
-                    )
-                )
-
-        db.session.commit()
+    _add_missing_columns(
+        "workshops",
+        {
+            "description_th": "TEXT",
+            "description_en": "TEXT",
+            "event_date": "DATE",
+            "start_time": "VARCHAR(20)",
+            "end_time": "VARCHAR(20)",
+            "location_th": "VARCHAR(255)",
+            "location_en": "VARCHAR(255)",
+            "price": "FLOAT DEFAULT 0",
+            "capacity": "INTEGER",
+            "image": "TEXT",
+            "booking_url": "TEXT",
+            "published": "BOOLEAN DEFAULT FALSE",
+            "featured": "BOOLEAN DEFAULT FALSE",
+            "created_at": "TIMESTAMP",
+            "updated_at": "TIMESTAMP",
+        },
+    )
 
 
 def initialize_database():

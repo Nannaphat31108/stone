@@ -37,7 +37,8 @@ class RestaurantSetting(db.Model):
 
     opening_hours = db.Column(
         db.Text,
-        nullable=True
+        nullable=True,
+        default="เปิดทุกวัน 09:00–21:00"
     )
 
     parking_info = db.Column(
