@@ -1,18 +1,157 @@
 {% extends "admin/base.html" %}
-{% block title %}{{ 'แก้ไข' if item else 'เพิ่ม' }} Workshop{% endblock %}
-{% block admin_content %}
-<div class="admin-header"><div><h1>{{ 'แก้ไข' if item else 'เพิ่ม' }} Workshop</h1><p>จัดการรายละเอียดกิจกรรมทั้งภาษาไทยและอังกฤษ</p></div><a class="edit-button" href="{{ url_for('admin_workshops') }}">กลับหน้ารายการ</a></div>
-<form class="admin-form" method="POST" enctype="multipart/form-data">
-<div class="form-grid"><div><label>ชื่อกิจกรรมภาษาไทย</label><input name="title_th" required value="{{ item.title_th if item else '' }}"></div><div><label>ชื่อกิจกรรมภาษาอังกฤษ</label><input name="title_en" required value="{{ item.title_en if item else '' }}"></div></div>
-<div class="form-grid"><div><label>คำโปรยภาษาไทย</label><textarea name="short_description_th" rows="3">{{ item.short_description_th if item else '' }}</textarea></div><div><label>คำโปรยภาษาอังกฤษ</label><textarea name="short_description_en" rows="3">{{ item.short_description_en if item else '' }}</textarea></div></div>
-<div class="form-grid"><div><label>รายละเอียดภาษาไทย</label><textarea name="details_th" rows="7">{{ item.details_th if item else '' }}</textarea></div><div><label>รายละเอียดภาษาอังกฤษ</label><textarea name="details_en" rows="7">{{ item.details_en if item else '' }}</textarea></div></div>
-<div class="form-grid"><div><label>วันที่</label><input type="date" name="event_date" value="{{ item.event_date.isoformat() if item and item.event_date else '' }}"></div><div><label>เวลาเริ่ม</label><input type="time" name="start_time" value="{{ item.start_time if item else '' }}"></div></div>
-<div class="form-grid"><div><label>เวลาสิ้นสุด</label><input type="time" name="end_time" value="{{ item.end_time if item else '' }}"></div><div><label>จำนวนผู้เข้าร่วมสูงสุด</label><input type="number" min="0" name="capacity" value="{{ item.capacity if item else 0 }}"></div></div>
-<div class="form-grid"><div><label>สถานที่ภาษาไทย</label><input name="location_th" value="{{ item.location_th if item else '' }}"></div><div><label>สถานที่ภาษาอังกฤษ</label><input name="location_en" value="{{ item.location_en if item else '' }}"></div></div>
-<div class="form-grid"><div><label>ราคา (บาท, ใส่ 0 หากฟรี)</label><input type="number" min="0" step="0.01" name="price" value="{{ item.price if item else 0 }}"></div><div><label>ลิงก์จองกิจกรรม</label><input type="url" name="booking_url" placeholder="https://..." value="{{ item.booking_url if item else '' }}"></div></div>
-<label>รูปปกกิจกรรม</label><input type="file" name="image" accept=".png,.jpg,.jpeg,.webp">{% if item and item.image %}<img class="form-preview-image" src="{{ image_url(item.image, 'workshop') }}" alt="">{% endif %}
-<label class="checkbox-label"><input type="checkbox" name="published" {% if not item or item.published %}checked{% endif %}> เผยแพร่บนเว็บไซต์</label>
-<label class="checkbox-label"><input type="checkbox" name="featured" {% if item and item.featured %}checked{% endif %}> แสดงเป็นกิจกรรมแนะนำ</label>
-<button class="admin-button" type="submit">บันทึกกิจกรรม</button>
-</form>
+
+{% block title %}
+{{ 'แก้ไขกิจกรรม' if workshop else 'เพิ่มกิจกรรม' }}
+{% endblock %}
+
+{% block content %}
+<style>
+.workshop-form-page{max-width:1000px}.workshop-form-card{padding:28px;border:1px solid rgba(205,168,95,.25);background:#171512}
+.workshop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.workshop-field{display:flex;flex-direction:column;gap:8px}.workshop-field.full{grid-column:1/-1}
+.workshop-field label{color:#e7d3a6}.workshop-field input,.workshop-field textarea,.workshop-field select{width:100%;padding:13px 14px;border:1px solid rgba(255,255,255,.18);background:#222;color:#fff}
+.workshop-field textarea{min-height:130px;resize:vertical}.workshop-checks{display:flex;gap:25px;flex-wrap:wrap;margin:24px 0}
+.workshop-form-actions{display:flex;gap:12px;flex-wrap:wrap}.workshop-save{padding:13px 23px;border:0;background:#cda85f;color:#111;font-weight:700;cursor:pointer}
+.workshop-cancel{padding:13px 23px;border:1px solid rgba(205,168,95,.5);color:#fff;text-decoration:none}
+.workshop-current-image{max-width:260px;max-height:180px;object-fit:cover;margin-top:10px}
+@media(max-width:760px){.workshop-grid{grid-template-columns:1fr}.workshop-field.full{grid-column:auto}}
+</style>
+
+<div class="workshop-form-page">
+    <p class="eyebrow">WORKSHOP & SPECIAL EVENT</p>
+    <h1>{{ 'แก้ไขกิจกรรม' if workshop else 'เพิ่ม Workshop หรือกิจกรรมพิเศษ' }}</h1>
+
+    <form class="workshop-form-card"
+          method="post"
+          enctype="multipart/form-data">
+
+        <div class="workshop-grid">
+            <div class="workshop-field">
+                <label>ชื่อภาษาไทย *</label>
+                <input type="text"
+                       name="title_th"
+                       required
+                       value="{{ workshop.title_th if workshop else '' }}">
+            </div>
+
+            <div class="workshop-field">
+                <label>ชื่อภาษาอังกฤษ *</label>
+                <input type="text"
+                       name="title_en"
+                       required
+                       value="{{ workshop.title_en if workshop else '' }}">
+            </div>
+
+            <div class="workshop-field full">
+                <label>รายละเอียดภาษาไทย</label>
+                <textarea name="description_th">{{ workshop.description_th if workshop else '' }}</textarea>
+            </div>
+
+            <div class="workshop-field full">
+                <label>รายละเอียดภาษาอังกฤษ</label>
+                <textarea name="description_en">{{ workshop.description_en if workshop else '' }}</textarea>
+            </div>
+
+            <div class="workshop-field">
+                <label>วันที่จัดกิจกรรม</label>
+                <input type="date"
+                       name="event_date"
+                       value="{{ workshop.event_date.isoformat() if workshop and workshop.event_date else '' }}">
+            </div>
+
+            <div class="workshop-field">
+                <label>จำนวนผู้เข้าร่วมสูงสุด</label>
+                <input type="number"
+                       name="capacity"
+                       min="1"
+                       value="{{ workshop.capacity if workshop and workshop.capacity else '' }}">
+            </div>
+
+            <div class="workshop-field">
+                <label>เวลาเริ่ม</label>
+                <input type="time"
+                       name="start_time"
+                       value="{{ workshop.start_time if workshop else '' }}">
+            </div>
+
+            <div class="workshop-field">
+                <label>เวลาสิ้นสุด</label>
+                <input type="time"
+                       name="end_time"
+                       value="{{ workshop.end_time if workshop else '' }}">
+            </div>
+
+            <div class="workshop-field">
+                <label>สถานที่ภาษาไทย</label>
+                <input type="text"
+                       name="location_th"
+                       value="{{ workshop.location_th if workshop else '' }}">
+            </div>
+
+            <div class="workshop-field">
+                <label>สถานที่ภาษาอังกฤษ</label>
+                <input type="text"
+                       name="location_en"
+                       value="{{ workshop.location_en if workshop else '' }}">
+            </div>
+
+            <div class="workshop-field">
+                <label>ราคา (บาท)</label>
+                <input type="number"
+                       name="price"
+                       min="0"
+                       step="0.01"
+                       value="{{ workshop.price if workshop else '0' }}">
+            </div>
+
+            <div class="workshop-field">
+                <label>ลิงก์สมัคร/จอง</label>
+                <input type="url"
+                       name="booking_url"
+                       placeholder="https://..."
+                       value="{{ workshop.booking_url if workshop else '' }}">
+            </div>
+
+            <div class="workshop-field full">
+                <label>รูปกิจกรรม</label>
+                <input type="file"
+                       name="image"
+                       accept="image/*">
+
+                {% if workshop and workshop.image %}
+                <img class="workshop-current-image"
+                     src="{{ image_url(workshop.image, 'workshop') }}"
+                     alt="{{ workshop.title_th }}">
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="workshop-checks">
+            <label>
+                <input type="checkbox"
+                       name="published"
+                       {% if workshop and workshop.published %}checked{% endif %}>
+                เผยแพร่บนเว็บไซต์
+            </label>
+
+            <label>
+                <input type="checkbox"
+                       name="featured"
+                       {% if workshop and workshop.featured %}checked{% endif %}>
+                กิจกรรมแนะนำ
+            </label>
+        </div>
+
+        <div class="workshop-form-actions">
+            <button class="workshop-save" type="submit">
+                บันทึกกิจกรรม
+            </button>
+
+            <a class="workshop-cancel"
+               href="{{ url_for('admin_workshops') }}">
+                ยกเลิก
+            </a>
+        </div>
+    </form>
+</div>
 {% endblock %}

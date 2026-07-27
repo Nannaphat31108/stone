@@ -1,0 +1,111 @@
+{% extends "admin/base.html" %}
+
+{% block title %}จัดการ Workshop{% endblock %}
+
+{% block content %}
+<style>
+.workshop-admin-head{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:30px;flex-wrap:wrap}
+.workshop-admin-head h1{margin:0}.workshop-add-btn{display:inline-flex;padding:13px 20px;background:#cda85f;color:#111;text-decoration:none;font-weight:700}
+.workshop-table-wrap{overflow-x:auto;border:1px solid rgba(205,168,95,.25);background:#171512}
+.workshop-table{width:100%;border-collapse:collapse;min-width:900px}
+.workshop-table th,.workshop-table td{padding:16px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;vertical-align:middle}
+.workshop-table th{color:#cda85f;font-size:.82rem;text-transform:uppercase;letter-spacing:.08em}
+.workshop-thumb{width:86px;height:64px;object-fit:cover;background:#222}
+.workshop-status{display:inline-block;padding:5px 9px;border:1px solid rgba(255,255,255,.18);font-size:.78rem}
+.workshop-actions{display:flex;gap:8px}.workshop-actions a,.workshop-actions button{padding:8px 12px;border:1px solid rgba(205,168,95,.45);background:transparent;color:#f3eee5;text-decoration:none;cursor:pointer}
+.workshop-actions button{border-color:rgba(255,100,100,.5);color:#ff9b9b}
+.empty-workshops{padding:50px;text-align:center;color:rgba(255,255,255,.65)}
+</style>
+
+<div class="workshop-admin-head">
+    <div>
+        <p class="eyebrow">SPECIAL EVENTS</p>
+        <h1>จัดการ Workshop และกิจกรรมพิเศษ</h1>
+    </div>
+
+    <a class="workshop-add-btn"
+       href="{{ url_for('admin_workshop_add') }}">
+        + เพิ่มกิจกรรม
+    </a>
+</div>
+
+<div class="workshop-table-wrap">
+    {% if workshop_items %}
+    <table class="workshop-table">
+        <thead>
+            <tr>
+                <th>รูป</th>
+                <th>ชื่อกิจกรรม</th>
+                <th>วันที่</th>
+                <th>ราคา</th>
+                <th>สถานะ</th>
+                <th>จัดการ</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in workshop_items %}
+            <tr>
+                <td>
+                    {% if item.image %}
+                    <img class="workshop-thumb"
+                         src="{{ image_url(item.image, 'workshop') }}"
+                         alt="{{ item.title_th }}">
+                    {% else %}
+                    <div class="workshop-thumb"></div>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <strong>{{ item.title_th }}</strong><br>
+                    <small>{{ item.title_en }}</small>
+                </td>
+
+                <td>
+                    {{ item.event_date.strftime('%d/%m/%Y') if item.event_date else 'ไม่ระบุ' }}
+                    {% if item.start_time %}
+                    <br><small>{{ item.start_time }}{% if item.end_time %}–{{ item.end_time }}{% endif %}</small>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if item.price %}
+                    ฿{{ '%.0f'|format(item.price) }}
+                    {% else %}
+                    ฟรี
+                    {% endif %}
+                </td>
+
+                <td>
+                    <span class="workshop-status">
+                        {{ 'เผยแพร่' if item.published else 'แบบร่าง' }}
+                    </span>
+                    {% if item.featured %}
+                    <span class="workshop-status">แนะนำ</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <div class="workshop-actions">
+                        <a href="{{ url_for('admin_workshop_edit', workshop_id=item.id) }}">
+                            แก้ไข
+                        </a>
+
+                        <form method="post"
+                              action="{{ url_for('admin_workshop_delete', workshop_id=item.id) }}"
+                              onsubmit="return confirm('ยืนยันการลบกิจกรรมนี้?');">
+                            <button type="submit">ลบ</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-workshops">
+        ยังไม่มีกิจกรรม กด “เพิ่มกิจกรรม” เพื่อเริ่มต้น
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
