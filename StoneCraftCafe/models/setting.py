@@ -2,30 +2,71 @@ from models import db
 
 
 class RestaurantSetting(db.Model):
-    __tablename__ = "restaurant_setting"
+    __tablename__ = "restaurant_settings"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
 
     restaurant_name = db.Column(
-        db.String(255),
+        db.String(150),
         nullable=False,
-        default="Stone Craft Cafe & Bistro",
+        default="Stone Craft Cafe & Bistro"
     )
-    phone = db.Column(db.String(50), nullable=True)
-    email = db.Column(db.String(255), nullable=True)
-    address_th = db.Column(db.Text, nullable=True)
-    address_en = db.Column(db.Text, nullable=True)
 
-    facebook_url = db.Column(db.Text, nullable=True)
-    instagram_url = db.Column(db.Text, nullable=True)
-    tiktok_url = db.Column(db.Text, nullable=True)
-    line_url = db.Column(db.Text, nullable=True)
-    grab_url = db.Column(db.Text, nullable=True)
+    phone = db.Column(
+        db.String(30),
+        nullable=True
+    )
 
-    google_maps_url = db.Column(db.Text, nullable=True)
-    google_maps_embed = db.Column(db.Text, nullable=True)
-    opening_hours = db.Column(db.Text, nullable=True)
-    parking_info = db.Column(db.Text, nullable=True)
+    email = db.Column(
+        db.String(120),
+        nullable=True
+    )
 
-    def __repr__(self):
-        return f"<RestaurantSetting id={self.id} name={self.restaurant_name!r}>"
+    address_th = db.Column(
+        db.Text,
+        nullable=True
+    )
+
+    address_en = db.Column(
+        db.Text,
+        nullable=True
+    )
+
+    facebook_url = db.Column(
+        db.String(500),
+        nullable=True
+    )
+
+    instagram_url = db.Column(
+        db.String(500),
+        nullable=True
+    )
+
+    tiktok_url = db.Column(
+        db.String(500),
+        nullable=True
+    )
+
+    line_url = db.Column(
+        db.String(500),
+        nullable=True
+    )
+
+    grab_url = db.Column(
+        db.String(500),
+        nullable=True
+    )
+
+    map_embed_url = db.Column(
+        db.Text,
+        nullable=True
+    )
+
+    map_url = db.Column(
+        db.String(1000),
+        nullable=True
+    )
+
