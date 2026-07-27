@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}Workshop & Special Events | Stone Craft{% endblock %}
+
+{% block content %}
+<style>
+.workshops-hero {
+    padding: 180px 0 80px;
+    background: #0b0a09;
+    text-align: center;
+}
+
+.workshops-hero h1 {
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    margin: 12px 0;
+}
+
+.workshops-section {
+    padding: 80px 0 130px;
+    background: #11100e;
+}
+
+.workshops-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 25px;
+}
+
+.workshop-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(205, 168, 95, 0.22);
+    background: #171512;
+    overflow: hidden;
+}
+
+.workshop-card-media {
+    display: block;
+    aspect-ratio: 4 / 3;
+    background: #222;
+    overflow: hidden;
+}
+
+.workshop-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.workshop-card:hover img {
+    transform: scale(1.04);
+}
+
+.workshop-card-body {
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.workshop-card-meta {
+    color: #cda85f;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+}
+
+.workshop-card h2 {
+    font-size: 1.7rem;
+    margin: 14px 0;
+}
+
+.workshop-card p {
+    color: rgba(255, 255, 255, 0.68);
+    line-height: 1.75;
+}
+
+.workshop-card-bottom {
+    margin-top: auto;
+    padding-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
+}
+
+.workshop-card-link {
+    color: #cda85f;
+    text-decoration: none;
+}
+
+.workshops-empty {
+    padding: 70px;
+    text-align: center;
+    border: 1px solid rgba(205, 168, 95, 0.2);
+}
+
+@media (max-width: 1000px) {
+    .workshops-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 650px) {
+    .workshops-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .workshops-hero {
+        padding-top: 130px;
+    }
+}
+</style>
+
+<section class="workshops-hero">
+    <div class="section-shell reveal">
+        <span class="eyebrow"
+              data-th="กิจกรรมพิเศษ"
+              data-en="SPECIAL EXPERIENCES">
+            กิจกรรมพิเศษ
+        </span>
+
+        <h1 data-th="Workshop และช่วงเวลาที่มากกว่ามื้ออาหาร"
+            data-en="Workshops and experiences beyond dining.">
+            Workshop และช่วงเวลาที่มากกว่ามื้ออาหาร
+        </h1>
+    </div>
+</section>
+
+<section class="workshops-section">
+    <div class="section-shell">
+        {% if workshop_items %}
+        <div class="workshops-grid">
+            {% for item in workshop_items %}
+            <article class="workshop-card reveal">
+                <a class="workshop-card-media"
+                   href="{{ url_for('workshop_detail', workshop_id=item.id) }}">
+                    {% if item.image %}
+                    <img src="{{ image_url(item.image, 'workshop') }}"
+                         alt="{{ item.title_th }}"
+                         loading="lazy">
+                    {% endif %}
+                </a>
+
+                <div class="workshop-card-body">
+                    <div class="workshop-card-meta">
+                        {% if item.event_date %}
+                            {{ item.event_date.strftime('%d.%m.%Y') }}
+                        {% else %}
+                            SPECIAL EVENT
+                        {% endif %}
+
+                        {% if item.start_time %}
+                            • {{ item.start_time }}
+                        {% endif %}
+                    </div>
+
+                    <h2>
+                        <span class="lang-th">{{ item.title_th }}</span>
+                        <span class="lang-en">{{ item.title_en }}</span>
+                    </h2>
+
+                    <p>
+                        <span class="lang-th">
+                            {{ (item.description_th or '')|truncate(150) }}
+                        </span>
+
+                        <span class="lang-en">
+                            {{ (item.description_en or '')|truncate(150) }}
+                        </span>
+                    </p>
+
+                    <div class="workshop-card-bottom">
+                        <strong>
+                            {% if item.price %}
+                                ฿{{ '%.0f'|format(item.price) }}
+                            {% else %}
+                                ฟรี
+                            {% endif %}
+                        </strong>
+
+                        <a class="workshop-card-link"
+                           href="{{ url_for('workshop_detail', workshop_id=item.id) }}">
+                            <span data-th="ดูรายละเอียด"
+                                  data-en="View details">
+                                ดูรายละเอียด
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="workshops-empty">
+            <h2 data-th="ยังไม่มีกิจกรรมในขณะนี้"
+                data-en="No upcoming experiences yet.">
+                ยังไม่มีกิจกรรมในขณะนี้
+            </h2>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
