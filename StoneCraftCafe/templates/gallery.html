@@ -1,34 +1,180 @@
 {% extends "base.html" %}
 
-{% block title %}Gallery | Stone Craft Cafe & Bistro{% endblock %}
+{% block title %}
+แกลเลอรี | Stone Craft Cafe & Bistro
+{% endblock %}
 
 {% block content %}
-<section class="gallery-empty-page">
+<style>
+.gallery-hero {
+    padding: 170px 0 80px;
+    text-align: center;
+    background: #0b0a09;
+}
+
+.gallery-hero h1 {
+    margin: 12px 0;
+    font-size: clamp(3rem, 7vw, 6rem);
+}
+
+.gallery-section {
+    padding: 80px 0 130px;
+    background: #11100e;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.gallery-card {
+    position: relative;
+    min-height: 360px;
+    overflow: hidden;
+    border: 1px solid rgba(205, 168, 95, 0.22);
+    background: #1a1815;
+}
+
+.gallery-card:nth-child(4n + 1) {
+    grid-column: span 2;
+}
+
+.gallery-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 360px;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.gallery-card:hover img {
+    transform: scale(1.04);
+}
+
+.gallery-card-overlay {
+    position: absolute;
+    inset: auto 0 0;
+    padding: 50px 24px 24px;
+    background:
+        linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.88),
+            transparent
+        );
+}
+
+.gallery-card-overlay h2 {
+    margin: 0;
+    color: #f3eee5;
+    font-size: 1.35rem;
+}
+
+.gallery-empty {
+    padding: 70px 24px;
+    border: 1px solid rgba(205, 168, 95, 0.22);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.gallery-empty h2 {
+    color: #d3ad65;
+}
+
+@media (max-width: 900px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gallery-card:nth-child(4n + 1) {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 620px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-hero {
+        padding-top: 130px;
+    }
+
+    .gallery-card,
+    .gallery-card img {
+        min-height: 300px;
+    }
+}
+</style>
+
+<section class="gallery-hero">
+    <div class="section-shell reveal">
+        <span class="eyebrow"
+              data-th="บรรยากาศของเรา"
+              data-en="OUR GALLERY">
+            บรรยากาศของเรา
+        </span>
+
+        <h1 data-th="ช่วงเวลาที่ Stone Craft"
+            data-en="Moments at Stone Craft.">
+            ช่วงเวลาที่ Stone Craft
+        </h1>
+
+        <p data-th="สำรวจอาหาร เครื่องดื่ม และบรรยากาศภายในร้าน"
+           data-en="Explore our food, drinks, and atmosphere.">
+            สำรวจอาหาร เครื่องดื่ม และบรรยากาศภายในร้าน
+        </p>
+    </div>
+</section>
+
+<section class="gallery-section">
     <div class="section-shell">
-        <div class="gallery-empty-content reveal">
-            <span class="eyebrow" data-th="แกลเลอรี" data-en="GALLERY">แกลเลอรี</span>
 
-            <img class="gallery-empty-logo"
-                 src="{{ url_for('static', filename='img/stonecraft-logo.webp') }}"
-                 alt="Stone Craft Cafe & Bistro">
+        {% if gallery_items %}
+        <div class="gallery-grid">
 
-            <h1 data-th="เรื่องราวบทใหม่กำลังจะเริ่มต้น"
-                data-en="A new visual story is coming soon.">
-                เรื่องราวบทใหม่กำลังจะเริ่มต้น
-            </h1>
+            {% for item in gallery_items %}
+            <article class="gallery-card reveal">
 
-            <p data-th="รูปภาพบรรยากาศ อาหาร และกิจกรรมของ Stone Craft จะถูกนำมาเผยแพร่เร็ว ๆ นี้"
-               data-en="Photos of our atmosphere, cuisine, and special events will be published soon.">
-                รูปภาพบรรยากาศ อาหาร และกิจกรรมของ Stone Craft จะถูกนำมาเผยแพร่เร็ว ๆ นี้
-            </p>
+                {% if item.image %}
+                <img src="{{ image_url(item.image, 'gallery') }}"
+                     alt="{{ item.title_th or item.title_en or 'Stone Craft Gallery' }}"
+                     loading="lazy">
+                {% endif %}
 
-            <div class="gallery-empty-actions">
-                <a href="{{ url_for('home') }}" class="button button-outline"
-                   data-th="กลับหน้าแรก" data-en="Back to Home">กลับหน้าแรก</a>
-                <a href="{{ url_for('reservation') }}" class="button button-gold"
-                   data-th="สำรองโต๊ะ" data-en="Reserve a Table">สำรองโต๊ะ</a>
-            </div>
+                {% if item.title_th or item.title_en %}
+                <div class="gallery-card-overlay">
+                    <h2>
+                        <span class="lang-th">
+                            {{ item.title_th or '' }}
+                        </span>
+
+                        <span class="lang-en">
+                            {{ item.title_en or '' }}
+                        </span>
+                    </h2>
+                </div>
+                {% endif %}
+
+            </article>
+            {% endfor %}
+
         </div>
+        {% else %}
+        <div class="gallery-empty">
+            <h2 data-th="ยังไม่มีรูปในแกลเลอรี"
+                data-en="No gallery images yet.">
+                ยังไม่มีรูปในแกลเลอรี
+            </h2>
+
+            <p data-th="เพิ่มรูปจากหน้าผู้ดูแล แล้วรูปจะปรากฏที่นี่"
+               data-en="Upload images from the admin dashboard and they will appear here.">
+                เพิ่มรูปจากหน้าผู้ดูแล แล้วรูปจะปรากฏที่นี่
+            </p>
+        </div>
+        {% endif %}
+
     </div>
 </section>
 {% endblock %}
