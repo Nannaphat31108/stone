@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="th" data-language="th">
+
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
@@ -14,6 +16,7 @@
         {% endblock %}
     </title>
 
+    <!-- Fonts -->
     <link rel="preconnect"
           href="https://fonts.googleapis.com">
 
@@ -24,38 +27,505 @@
     <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap"
           rel="stylesheet">
 
+    <!-- Main CSS -->
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
 
+    <!-- Favicon -->
     <link rel="icon"
           type="image/webp"
           href="{{ url_for('static', filename='img/stonecraft-logo.webp') }}">
 
     {% block head %}{% endblock %}
+
+    <style>
+
+        /* ====================================
+           TOP CONTACT BAR
+        ==================================== */
+
+        .top-contact-bar {
+            position: relative;
+            z-index: 1002;
+
+            width: 100%;
+
+            background: #080706;
+
+            border-bottom: 1px solid
+                rgba(201, 164, 97, 0.18);
+
+            color: rgba(243, 238, 229, 0.78);
+        }
+
+
+        .top-contact-shell {
+            width: min(
+                1440px,
+                calc(100% - 48px)
+            );
+
+            min-height: 42px;
+
+            margin: 0 auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 25px;
+        }
+
+
+        .top-contact-left,
+        .top-contact-right {
+            display: flex;
+
+            align-items: center;
+
+            gap: 22px;
+        }
+
+
+        .top-contact-item {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            color: rgba(243, 238, 229, 0.72);
+
+            text-decoration: none;
+
+            font-size: 0.78rem;
+
+            line-height: 1;
+
+            transition:
+                color 0.25s ease,
+                opacity 0.25s ease;
+        }
+
+
+        .top-contact-item:hover {
+            color: #c9a461;
+        }
+
+
+        .top-contact-label {
+            color: #c9a461;
+
+            font-family:
+                "Bai Jamjuree",
+                sans-serif;
+
+            font-size: 0.68rem;
+
+            font-weight: 600;
+
+            letter-spacing: 0.08em;
+
+            text-transform: uppercase;
+        }
+
+
+        .top-contact-social {
+            color: rgba(
+                243,
+                238,
+                229,
+                0.7
+            );
+
+            text-decoration: none;
+
+            font-family:
+                "Manrope",
+                "Sarabun",
+                sans-serif;
+
+            font-size: 0.72rem;
+
+            letter-spacing: 0.04em;
+
+            transition:
+                color 0.25s ease;
+        }
+
+
+        .top-contact-social:hover {
+            color: #c9a461;
+        }
+
+
+        .top-contact-open {
+            color: rgba(
+                243,
+                238,
+                229,
+                0.7
+            );
+
+            font-size: 0.76rem;
+        }
+
+
+        .top-contact-open strong {
+            margin-right: 6px;
+
+            color: #c9a461;
+
+            font-weight: 500;
+        }
+
+
+        /* ====================================
+           PUBLIC HEADER POSITION
+        ==================================== */
+
+        .site-header {
+            position: sticky;
+            top: 0;
+        }
+
+
+        /* ====================================
+           MOBILE
+        ==================================== */
+
+        @media (max-width: 1000px) {
+
+            .top-contact-shell {
+                width: min(
+                    100% - 32px,
+                    1440px
+                );
+            }
+
+            .top-contact-right {
+                gap: 13px;
+            }
+
+            .top-contact-social {
+                font-size: 0.68rem;
+            }
+
+        }
+
+
+        @media (max-width: 760px) {
+
+            .top-contact-bar {
+                padding: 9px 0;
+            }
+
+
+            .top-contact-shell {
+                min-height: auto;
+
+                flex-direction: column;
+
+                justify-content: center;
+
+                gap: 8px;
+            }
+
+
+            .top-contact-left {
+                width: 100%;
+
+                justify-content: center;
+
+                gap: 14px;
+
+                flex-wrap: wrap;
+            }
+
+
+            .top-contact-right {
+                width: 100%;
+
+                justify-content: center;
+
+                flex-wrap: wrap;
+
+                gap: 13px;
+            }
+
+
+            .top-contact-open {
+                display: none;
+            }
+
+
+            .top-contact-label {
+                display: none;
+            }
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            .top-contact-shell {
+                width: calc(100% - 24px);
+            }
+
+
+            .top-contact-left {
+                gap: 10px;
+            }
+
+
+            .top-contact-item {
+                font-size: 0.71rem;
+            }
+
+
+            .top-contact-right {
+                gap: 11px;
+            }
+
+
+            .top-contact-social {
+                font-size: 0.65rem;
+            }
+
+        }
+
+    </style>
+
 </head>
 
+
 <body>
+
+
+<!-- ====================================
+     LOADING SCREEN
+==================================== -->
 
 <div class="site-loader"
      id="siteLoader"
      aria-hidden="true">
 
     <div class="loader-logo-wrap">
+
         <img class="loader-logo"
              src="{{ url_for('static', filename='img/stonecraft-logo.webp') }}"
              alt="Stone Craft Cafe & Bistro">
+
     </div>
+
 </div>
+
 
 <div class="scroll-progress"
      id="scrollProgress">
 </div>
+
+
+<!-- ====================================
+     CONTACT BAR ด้านบนสุด
+==================================== -->
+
+<div class="top-contact-bar">
+
+    <div class="top-contact-shell">
+
+
+        <!-- LEFT -->
+        <div class="top-contact-left">
+
+
+            {% if restaurant_setting.phone %}
+
+            <a class="top-contact-item"
+               href="tel:{{ restaurant_setting.phone|replace(' ', '') }}">
+
+                <span class="top-contact-label">
+
+                    <span class="lang-th">
+                        โทร
+                    </span>
+
+                    <span class="lang-en">
+                        CALL
+                    </span>
+
+                </span>
+
+                <span>
+                    {{ restaurant_setting.phone }}
+                </span>
+
+            </a>
+
+            {% endif %}
+
+
+            {% if restaurant_setting.email %}
+
+            <a class="top-contact-item"
+               href="mailto:{{ restaurant_setting.email }}">
+
+                <span class="top-contact-label">
+
+                    <span class="lang-th">
+                        อีเมล
+                    </span>
+
+                    <span class="lang-en">
+                        EMAIL
+                    </span>
+
+                </span>
+
+                <span>
+                    {{ restaurant_setting.email }}
+                </span>
+
+            </a>
+
+            {% endif %}
+
+
+            <div class="top-contact-open">
+
+                <strong>
+
+                    <span class="lang-th">
+                        เปิดทุกวัน
+                    </span>
+
+                    <span class="lang-en">
+                        OPEN DAILY
+                    </span>
+
+                </strong>
+
+                09:00 – 21:00
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SOCIAL -->
+        <div class="top-contact-right">
+
+
+            {% if restaurant_setting.facebook_url %}
+
+            <a class="top-contact-social"
+               href="{{ restaurant_setting.facebook_url }}"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                Facebook
+
+            </a>
+
+            {% endif %}
+
+
+            {% if restaurant_setting.instagram_url %}
+
+            <a class="top-contact-social"
+               href="{{ restaurant_setting.instagram_url }}"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                Instagram
+
+            </a>
+
+            {% endif %}
+
+
+            {% if restaurant_setting.tiktok_url %}
+
+            <a class="top-contact-social"
+               href="{{ restaurant_setting.tiktok_url }}"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                TikTok
+
+            </a>
+
+            {% endif %}
+
+
+            {% if restaurant_setting.line_url %}
+
+            <a class="top-contact-social"
+               href="{{ restaurant_setting.line_url }}"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                LINE
+
+            </a>
+
+            {% endif %}
+
+
+            {% if restaurant_setting.grab_url %}
+
+            <a class="top-contact-social"
+               href="{{ restaurant_setting.grab_url }}"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                GrabFood
+
+            </a>
+
+            {% endif %}
+
+
+            {% if restaurant_setting.google_maps_url %}
+
+            <a class="top-contact-social"
+               href="{{ restaurant_setting.google_maps_url }}"
+               target="_blank"
+               rel="noopener noreferrer">
+
+                <span class="lang-th">
+                    แผนที่
+                </span>
+
+                <span class="lang-en">
+                    MAP
+                </span>
+
+            </a>
+
+            {% endif %}
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ====================================
+     MAIN HEADER
+==================================== -->
 
 <header class="site-header"
         id="siteHeader">
 
     <div class="nav-shell">
 
+
+        <!-- LOGO -->
         <a class="brand brand-with-logo"
            href="{{ url_for('home') }}"
            aria-label="Stone Craft home">
@@ -64,17 +534,29 @@
                  src="{{ url_for('static', filename='img/stonecraft-logo.webp') }}"
                  alt="Stone Craft Cafe & Bistro">
 
+
             <span class="brand-copy">
+
                 <strong>
-                    {{ restaurant_setting.restaurant_name or "Stone Craft Cafe & Bistro" }}
+
+                    {{
+                        restaurant_setting.restaurant_name
+                        or
+                        "Stone Craft Cafe & Bistro"
+                    }}
+
                 </strong>
 
                 <small>
                     Cafe & Bistro
                 </small>
+
             </span>
+
         </a>
 
+
+        <!-- MOBILE MENU -->
         <button class="nav-toggle"
                 id="navToggle"
                 type="button"
@@ -83,272 +565,464 @@
 
             <span></span>
             <span></span>
+
         </button>
 
+
+        <!-- MAIN NAV -->
         <nav class="main-nav"
              id="mainNav"
              aria-label="เมนูหลัก">
 
+
             <a href="{{ url_for('home') }}"
                data-th="หน้าแรก"
                data-en="Home">
+
                 หน้าแรก
+
             </a>
+
 
             <a href="{{ url_for('about') }}"
                data-th="เรื่องราวของเรา"
                data-en="Our Story">
+
                 เรื่องราวของเรา
+
             </a>
+
 
             <a href="{{ url_for('menu') }}"
                data-th="เมนู"
                data-en="Menu">
+
                 เมนู
+
             </a>
+
 
             <a href="{{ url_for('gallery') }}"
                data-th="แกลเลอรี"
                data-en="Gallery">
+
                 แกลเลอรี
+
             </a>
+
 
             <a href="{{ url_for('workshops') }}"
                data-th="เวิร์กช็อป"
                data-en="Workshops">
+
                 เวิร์กช็อป
+
             </a>
+
 
             <a href="{{ url_for('review') }}"
                data-th="รีวิว"
                data-en="Reviews">
+
                 รีวิว
+
             </a>
+
 
             <a href="{{ url_for('reservation') }}"
                data-th="จองโต๊ะ"
                data-en="Reservations">
+
                 จองโต๊ะ
+
             </a>
+
+
         </nav>
 
+
+        <!-- RIGHT ACTIONS -->
         <div class="nav-actions">
+
 
             <button class="language-switch"
                     id="languageSwitch"
                     type="button"
                     aria-label="เปลี่ยนภาษา">
 
+
                 <span class="language-active">
                     TH
                 </span>
+
 
                 <span class="language-divider">
                     /
                 </span>
 
+
                 <span>
                     EN
                 </span>
+
+
             </button>
+
 
             <a class="button button-small button-gold nav-reserve"
                href="{{ url_for('reservation') }}"
                data-th="สำรองโต๊ะ"
                data-en="Reserve">
+
                 สำรองโต๊ะ
+
             </a>
+
+
         </div>
+
     </div>
+
 </header>
+
+
+<!-- ====================================
+     PAGE CONTENT
+==================================== -->
 
 <main>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
+
+    {% with messages =
+        get_flashed_messages(
+            with_categories=true
+        )
+    %}
+
+
         {% if messages %}
 
-            <div class="flash-stack">
+        <div class="flash-stack">
 
-                {% for category, message in messages %}
-                    <div class="flash-message flash-{{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+            {% for category, message in messages %}
+
+            <div class="flash-message flash-{{ category }}">
+
+                {{ message }}
 
             </div>
 
+            {% endfor %}
+
+        </div>
+
         {% endif %}
+
+
     {% endwith %}
 
-    {% block content %}{% endblock %}
+
+    {% block content %}
+    {% endblock %}
+
 
 </main>
+
+
+<!-- ====================================
+     FOOTER
+==================================== -->
 
 <footer class="site-footer">
 
     <div class="footer-glow"></div>
 
+
     <div class="footer-grid">
 
+
+        <!-- BRAND -->
         <div class="footer-brand">
+
 
             <img class="footer-logo"
                  src="{{ url_for('static', filename='img/stonecraft-logo.webp') }}"
                  alt="Stone Craft Cafe & Bistro">
 
+
             <span class="eyebrow">
                 STONE CRAFT
             </span>
 
-            <h2 data-th="รสชาติที่ตั้งใจ บรรยากาศที่น่าจดจำ"
+
+            <h2
+                data-th="รสชาติที่ตั้งใจ บรรยากาศที่น่าจดจำ"
                 data-en="Considered flavours. Memorable moments.">
 
-                รสชาติที่ตั้งใจ บรรยากาศที่น่าจดจำ
+                รสชาติที่ตั้งใจ
+                บรรยากาศที่น่าจดจำ
+
             </h2>
 
-            <p data-th="คาเฟ่และบิสโทรร่วมสมัยที่ผสานวัตถุดิบคุณภาพ งานคราฟต์ และการบริการอย่างอบอุ่น"
-               data-en="A contemporary cafe and bistro shaped by quality ingredients, craft, and warm hospitality.">
 
-                คาเฟ่และบิสโทรร่วมสมัยที่ผสานวัตถุดิบคุณภาพ
-                งานคราฟต์ และการบริการอย่างอบอุ่น
+            <p
+                data-th="คาเฟ่และบิสโทรร่วมสมัยที่ผสานวัตถุดิบคุณภาพ งานคราฟต์ และการบริการอย่างอบอุ่น"
+                data-en="A contemporary cafe and bistro shaped by quality ingredients, craft, and warm hospitality.">
+
+                คาเฟ่และบิสโทรร่วมสมัย
+                ที่ผสานวัตถุดิบคุณภาพ
+                งานคราฟต์
+                และการบริการอย่างอบอุ่น
+
             </p>
+
+
         </div>
 
+
+        <!-- OPENING HOURS -->
         <div class="footer-column">
 
-            <h3 data-th="เวลาทำการ"
+
+            <h3
+                data-th="เวลาทำการ"
                 data-en="Opening Hours">
+
                 เวลาทำการ
+
             </h3>
+
 
             <p>
+
                 <span class="lang-th">
-                    เปิดทุกวัน<br>
+
+                    เปิดทุกวัน
+                    <br>
+
                     09:00 — 21:00
+
                 </span>
+
 
                 <span class="lang-en">
-                    Open daily<br>
+
+                    Open Daily
+                    <br>
+
                     09:00 — 21:00
+
                 </span>
+
             </p>
+
+
         </div>
 
+
+        <!-- CONTACT -->
         <div class="footer-column">
 
-            <h3 data-th="ติดต่อ"
+
+            <h3
+                data-th="ติดต่อ"
                 data-en="Contact">
+
                 ติดต่อ
+
             </h3>
+
 
             {% if restaurant_setting.phone %}
-                <a href="tel:{{ restaurant_setting.phone|replace(' ', '') }}">
-                    {{ restaurant_setting.phone }}
-                </a>
+
+            <a href="tel:{{ restaurant_setting.phone|replace(' ', '') }}">
+
+                {{ restaurant_setting.phone }}
+
+            </a>
+
             {% endif %}
+
 
             {% if restaurant_setting.email %}
-                <a href="mailto:{{ restaurant_setting.email }}">
-                    {{ restaurant_setting.email }}
-                </a>
+
+            <a href="mailto:{{ restaurant_setting.email }}">
+
+                {{ restaurant_setting.email }}
+
+            </a>
+
             {% endif %}
 
+
             <p>
+
                 <span class="lang-th">
-                    {{ restaurant_setting.address_th or "60/168 หมู่ 9 ซอยบงกช 6/4 ต.หนองปรือ อ.บางละมุง จ.ชลบุรี 20150" }}
+
+                    {{
+                        restaurant_setting.address_th
+                        or
+                        "60/168 หมู่ 9 ซอยบงกช 6/4 ต.หนองปรือ อ.บางละมุง จ.ชลบุรี 20150"
+                    }}
+
                 </span>
+
 
                 <span class="lang-en">
-                    {{ restaurant_setting.address_en or "60/168 Moo 9, Soi Bongkot 6/4, Nong Prue, Bang Lamung, Chon Buri 20150" }}
+
+                    {{
+                        restaurant_setting.address_en
+                        or
+                        "60/168 Moo 9, Soi Bongkot 6/4, Nong Prue, Bang Lamung, Chon Buri 20150"
+                    }}
+
                 </span>
+
             </p>
+
+
         </div>
 
+
+        <!-- SOCIAL -->
         <div class="footer-column">
 
-            <h3 data-th="ติดตามเรา"
+
+            <h3
+                data-th="ติดตามเรา"
                 data-en="Follow Us">
+
                 ติดตามเรา
+
             </h3>
+
 
             <div class="social-links">
 
+
                 {% if restaurant_setting.facebook_url %}
-                    <a href="{{ restaurant_setting.facebook_url }}"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       aria-label="Facebook">
-                        Facebook
-                    </a>
+
+                <a href="{{ restaurant_setting.facebook_url }}"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    Facebook
+
+                </a>
+
                 {% endif %}
+
 
                 {% if restaurant_setting.instagram_url %}
-                    <a href="{{ restaurant_setting.instagram_url }}"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       aria-label="Instagram">
-                        Instagram
-                    </a>
+
+                <a href="{{ restaurant_setting.instagram_url }}"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    Instagram
+
+                </a>
+
                 {% endif %}
+
 
                 {% if restaurant_setting.tiktok_url %}
-                    <a href="{{ restaurant_setting.tiktok_url }}"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       aria-label="TikTok">
-                        TikTok
-                    </a>
+
+                <a href="{{ restaurant_setting.tiktok_url }}"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    TikTok
+
+                </a>
+
                 {% endif %}
+
 
                 {% if restaurant_setting.line_url %}
-                    <a href="{{ restaurant_setting.line_url }}"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       aria-label="LINE">
-                        LINE
-                    </a>
+
+                <a href="{{ restaurant_setting.line_url }}"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    LINE
+
+                </a>
+
                 {% endif %}
+
 
                 {% if restaurant_setting.grab_url %}
-                    <a href="{{ restaurant_setting.grab_url }}"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       aria-label="GrabFood">
-                        GrabFood
-                    </a>
+
+                <a href="{{ restaurant_setting.grab_url }}"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    GrabFood
+
+                </a>
+
                 {% endif %}
 
+
             </div>
+
         </div>
 
     </div>
 
+
+    <!-- FOOTER BOTTOM -->
     <div class="footer-bottom">
 
+
         <p>
-            © <span id="currentYear"></span>
-            {{ restaurant_setting.restaurant_name or "Stone Craft Cafe & Bistro" }}
+
+            ©
+            <span id="currentYear"></span>
+
+            {{
+                restaurant_setting.restaurant_name
+                or
+                "Stone Craft Cafe & Bistro"
+            }}
+
         </p>
+
 
         <a href="{{ url_for('admin_login') }}"
            data-th="เข้าสู่ระบบผู้ดูแล"
            data-en="Admin login">
+
             เข้าสู่ระบบผู้ดูแล
+
         </a>
 
+
     </div>
+
 </footer>
 
+
+<!-- BACK TO TOP -->
 <button class="back-to-top"
         id="backToTop"
         type="button"
         aria-label="กลับด้านบน">
+
     ↑
+
 </button>
 
+
+<!-- MAIN JS -->
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
-{% block scripts %}{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
 
 </body>
+
 </html>
