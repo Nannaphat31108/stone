@@ -2,8 +2,6 @@
 <html lang="th" data-language="th">
 
 <head>
-    <meta name="google-site-verification" content="K_HYXFfEpRcn3d1XY2LoHaTc1u3FxqYfaEhG9vYGlg8" />
-
     <meta charset="UTF-8">
 
     <meta name="viewport"
@@ -12,13 +10,41 @@
     <meta name="description"
           content="Stone Craft Cafe & Bistro — premium dining, specialty coffee, and a refined black-and-gold atmosphere.">
 
+    <!-- =====================================================
+         GOOGLE ADS GOOGLE TAG
+         Google Ads ID: AW-16604895446
+    ====================================================== -->
+
+    <script async
+            src="https://www.googletagmanager.com/gtag/js?id=AW-16604895446">
+    </script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'AW-16604895446');
+    </script>
+
+    <!-- =====================================================
+         TITLE
+    ====================================================== -->
+
     <title>
         {% block title %}
         Stone Craft Cafe & Bistro
         {% endblock %}
     </title>
 
-    <!-- Fonts -->
+    <!-- =====================================================
+         FONTS
+    ====================================================== -->
+
     <link rel="preconnect"
           href="https://fonts.googleapis.com">
 
@@ -29,35 +55,42 @@
     <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap"
           rel="stylesheet">
 
-    <!-- Main CSS -->
+    <!-- =====================================================
+         MAIN CSS
+    ====================================================== -->
+
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
 
-    <!-- Favicon -->
+    <!-- =====================================================
+         FAVICON
+    ====================================================== -->
+
     <link rel="icon"
           type="image/webp"
           href="{{ url_for('static', filename='img/stonecraft-logo.webp') }}">
 
     {% block head %}{% endblock %}
 
-    <style>
 
-        /* ====================================
-           TOP CONTACT BAR
-        ==================================== */
+    <!-- =====================================================
+         TOP CONTACT BAR STYLE
+    ====================================================== -->
+
+    <style>
 
         .top-contact-bar {
             position: relative;
             z-index: 1002;
-
             width: 100%;
 
             background: #080706;
 
-            border-bottom: 1px solid
-                rgba(201, 164, 97, 0.18);
+            border-bottom:
+                1px solid rgba(201, 164, 97, 0.18);
 
-            color: rgba(243, 238, 229, 0.78);
+            color:
+                rgba(243, 238, 229, 0.78);
         }
 
 
@@ -98,7 +131,8 @@
 
             gap: 7px;
 
-            color: rgba(243, 238, 229, 0.72);
+            color:
+                rgba(243, 238, 229, 0.72);
 
             text-decoration: none;
 
@@ -135,12 +169,8 @@
 
 
         .top-contact-social {
-            color: rgba(
-                243,
-                238,
-                229,
-                0.7
-            );
+            color:
+                rgba(243, 238, 229, 0.70);
 
             text-decoration: none;
 
@@ -164,12 +194,8 @@
 
 
         .top-contact-open {
-            color: rgba(
-                243,
-                238,
-                229,
-                0.7
-            );
+            color:
+                rgba(243, 238, 229, 0.70);
 
             font-size: 0.76rem;
         }
@@ -184,25 +210,21 @@
         }
 
 
-        /* ====================================
-           PUBLIC HEADER POSITION
-        ==================================== */
-
         .site-header {
             position: sticky;
             top: 0;
         }
 
 
-        /* ====================================
-           MOBILE
-        ==================================== */
+        /* =====================================================
+           TABLET
+        ====================================================== */
 
         @media (max-width: 1000px) {
 
             .top-contact-shell {
                 width: min(
-                    100% - 32px,
+                    calc(100% - 32px),
                     1440px
                 );
             }
@@ -217,6 +239,10 @@
 
         }
 
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
 
         @media (max-width: 760px) {
 
@@ -306,9 +332,9 @@
 <body>
 
 
-<!-- ====================================
+<!-- =====================================================
      LOADING SCREEN
-==================================== -->
+====================================================== -->
 
 <div class="site-loader"
      id="siteLoader"
@@ -330,16 +356,18 @@
 </div>
 
 
-<!-- ====================================
-     CONTACT BAR ด้านบนสุด
-==================================== -->
+
+<!-- =====================================================
+     TOP CONTACT BAR
+====================================================== -->
 
 <div class="top-contact-bar">
 
     <div class="top-contact-shell">
 
 
-        <!-- LEFT -->
+        <!-- LEFT SIDE -->
+
         <div class="top-contact-left">
 
 
@@ -369,6 +397,7 @@
             {% endif %}
 
 
+
             {% if restaurant_setting.email %}
 
             <a class="top-contact-item"
@@ -395,6 +424,7 @@
             {% endif %}
 
 
+
             <div class="top-contact-open">
 
                 <strong>
@@ -416,7 +446,9 @@
         </div>
 
 
-        <!-- RIGHT SOCIAL -->
+
+        <!-- RIGHT SIDE / SOCIAL -->
+
         <div class="top-contact-right">
 
 
@@ -434,6 +466,7 @@
             {% endif %}
 
 
+
             {% if restaurant_setting.instagram_url %}
 
             <a class="top-contact-social"
@@ -446,6 +479,7 @@
             </a>
 
             {% endif %}
+
 
 
             {% if restaurant_setting.tiktok_url %}
@@ -462,6 +496,7 @@
             {% endif %}
 
 
+
             {% if restaurant_setting.line_url %}
 
             <a class="top-contact-social"
@@ -474,6 +509,7 @@
             </a>
 
             {% endif %}
+
 
 
             {% if restaurant_setting.grab_url %}
@@ -490,24 +526,17 @@
             {% endif %}
 
 
-            {% if restaurant_setting.google_maps_url %}
+
+            <!-- GOOGLE MAPS -->
 
             <a class="top-contact-social"
-               href="{{ restaurant_setting.google_maps_url }}"
+               href="https://www.google.com/maps/search/?api=1&query=Stone+Craft+Cafe+%26+Bistro+Pattaya"
                target="_blank"
                rel="noopener noreferrer">
 
-                <span class="lang-th">
-                    แผนที่
-                </span>
-
-                <span class="lang-en">
-                    MAP
-                </span>
+                Google Maps
 
             </a>
-
-            {% endif %}
 
 
         </div>
@@ -517,9 +546,10 @@
 </div>
 
 
-<!-- ====================================
+
+<!-- =====================================================
      MAIN HEADER
-==================================== -->
+====================================================== -->
 
 <header class="site-header"
         id="siteHeader">
@@ -528,6 +558,7 @@
 
 
         <!-- LOGO -->
+
         <a class="brand brand-with-logo"
            href="{{ url_for('home') }}"
            aria-label="Stone Craft home">
@@ -558,7 +589,9 @@
         </a>
 
 
-        <!-- MOBILE MENU -->
+
+        <!-- MOBILE MENU BUTTON -->
+
         <button class="nav-toggle"
                 id="navToggle"
                 type="button"
@@ -571,7 +604,9 @@
         </button>
 
 
-        <!-- MAIN NAV -->
+
+        <!-- MAIN NAVIGATION -->
+
         <nav class="main-nav"
              id="mainNav"
              aria-label="เมนูหลัก">
@@ -639,11 +674,12 @@
 
             </a>
 
-
         </nav>
 
 
-        <!-- RIGHT ACTIONS -->
+
+        <!-- NAV ACTIONS -->
+
         <div class="nav-actions">
 
 
@@ -652,21 +688,17 @@
                     type="button"
                     aria-label="เปลี่ยนภาษา">
 
-
                 <span class="language-active">
                     TH
                 </span>
-
 
                 <span class="language-divider">
                     /
                 </span>
 
-
                 <span>
                     EN
                 </span>
-
 
             </button>
 
@@ -680,7 +712,6 @@
 
             </a>
 
-
         </div>
 
     </div>
@@ -688,19 +719,15 @@
 </header>
 
 
-<!-- ====================================
+
+<!-- =====================================================
      PAGE CONTENT
-==================================== -->
+====================================================== -->
 
 <main>
 
 
-    {% with messages =
-        get_flashed_messages(
-            with_categories=true
-        )
-    %}
-
+    {% with messages = get_flashed_messages(with_categories=true) %}
 
         {% if messages %}
 
@@ -720,7 +747,6 @@
 
         {% endif %}
 
-
     {% endwith %}
 
 
@@ -731,9 +757,10 @@
 </main>
 
 
-<!-- ====================================
+
+<!-- =====================================================
      FOOTER
-==================================== -->
+====================================================== -->
 
 <footer class="site-footer">
 
@@ -744,6 +771,7 @@
 
 
         <!-- BRAND -->
+
         <div class="footer-brand">
 
 
@@ -757,37 +785,32 @@
             </span>
 
 
-            <h2
-                data-th="รสชาติที่ตั้งใจ บรรยากาศที่น่าจดจำ"
+            <h2 data-th="รสชาติที่ตั้งใจ บรรยากาศที่น่าจดจำ"
                 data-en="Considered flavours. Memorable moments.">
 
-                รสชาติที่ตั้งใจ
-                บรรยากาศที่น่าจดจำ
+                รสชาติที่ตั้งใจ บรรยากาศที่น่าจดจำ
 
             </h2>
 
 
-            <p
-                data-th="คาเฟ่และบิสโทรร่วมสมัยที่ผสานวัตถุดิบคุณภาพ งานคราฟต์ และการบริการอย่างอบอุ่น"
-                data-en="A contemporary cafe and bistro shaped by quality ingredients, craft, and warm hospitality.">
+            <p data-th="คาเฟ่และบิสโทรร่วมสมัยที่ผสานวัตถุดิบคุณภาพ งานคราฟต์ และการบริการอย่างอบอุ่น"
+               data-en="A contemporary cafe and bistro shaped by quality ingredients, craft, and warm hospitality.">
 
-                คาเฟ่และบิสโทรร่วมสมัย
-                ที่ผสานวัตถุดิบคุณภาพ
-                งานคราฟต์
-                และการบริการอย่างอบอุ่น
+                คาเฟ่และบิสโทรร่วมสมัยที่ผสานวัตถุดิบคุณภาพ
+                งานคราฟต์ และการบริการอย่างอบอุ่น
 
             </p>
-
 
         </div>
 
 
+
         <!-- OPENING HOURS -->
+
         <div class="footer-column">
 
 
-            <h3
-                data-th="เวลาทำการ"
+            <h3 data-th="เวลาทำการ"
                 data-en="Opening Hours">
 
                 เวลาทำการ
@@ -818,21 +841,22 @@
 
             </p>
 
-
         </div>
 
 
+
         <!-- CONTACT -->
+
         <div class="footer-column">
 
 
-            <h3
-                data-th="ติดต่อ"
+            <h3 data-th="ติดต่อ"
                 data-en="Contact">
 
                 ติดต่อ
 
             </h3>
+
 
 
             {% if restaurant_setting.phone %}
@@ -846,6 +870,7 @@
             {% endif %}
 
 
+
             {% if restaurant_setting.email %}
 
             <a href="mailto:{{ restaurant_setting.email }}">
@@ -855,6 +880,7 @@
             </a>
 
             {% endif %}
+
 
 
             <p>
@@ -882,16 +908,16 @@
 
             </p>
 
-
         </div>
 
 
+
         <!-- SOCIAL -->
+
         <div class="footer-column">
 
 
-            <h3
-                data-th="ติดตามเรา"
+            <h3 data-th="ติดตามเรา"
                 data-en="Follow Us">
 
                 ติดตามเรา
@@ -915,6 +941,7 @@
                 {% endif %}
 
 
+
                 {% if restaurant_setting.instagram_url %}
 
                 <a href="{{ restaurant_setting.instagram_url }}"
@@ -926,6 +953,7 @@
                 </a>
 
                 {% endif %}
+
 
 
                 {% if restaurant_setting.tiktok_url %}
@@ -941,6 +969,7 @@
                 {% endif %}
 
 
+
                 {% if restaurant_setting.line_url %}
 
                 <a href="{{ restaurant_setting.line_url }}"
@@ -952,6 +981,7 @@
                 </a>
 
                 {% endif %}
+
 
 
                 {% if restaurant_setting.grab_url %}
@@ -967,6 +997,15 @@
                 {% endif %}
 
 
+                <a href="https://www.google.com/maps/search/?api=1&query=Stone+Craft+Cafe+%26+Bistro+Pattaya"
+                   target="_blank"
+                   rel="noopener noreferrer">
+
+                    Google Maps
+
+                </a>
+
+
             </div>
 
         </div>
@@ -974,7 +1013,9 @@
     </div>
 
 
+
     <!-- FOOTER BOTTOM -->
+
     <div class="footer-bottom">
 
 
@@ -1000,13 +1041,16 @@
 
         </a>
 
-
     </div>
 
 </footer>
 
 
-<!-- BACK TO TOP -->
+
+<!-- =====================================================
+     BACK TO TOP
+====================================================== -->
+
 <button class="back-to-top"
         id="backToTop"
         type="button"
@@ -1017,7 +1061,11 @@
 </button>
 
 
-<!-- MAIN JS -->
+
+<!-- =====================================================
+     MAIN JAVASCRIPT
+====================================================== -->
+
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
 
